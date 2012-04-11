@@ -36,6 +36,7 @@ case "$server" in
   thin)    $BEXEC thin start -p 8338 -e production ;;
   puma)    RACK_ENV=production $BEXEC puma -p 8338 -q ;;
   unicorn) $BEXEC unicorn -p 8338 -E production ;;
+  goliath) ./start-goliath.sh ;;
   *)
     echo "Unsupported server type: $server"
     echo "Supported server types are: $(cat "$self" | egrep '\).*;;' | fgrep -v grep | sed 's/^ *//; s/).*$//' | sort | xargs echo)"

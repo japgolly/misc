@@ -37,6 +37,7 @@ echo
 case "$server" in
   puma)     RACK_ENV=production $BEXEC puma -p 8338 -q ;;
   trinidad) $BEXEC trinidad -p 8338 -e production ;;
+  goliath)  ./start-goliath.sh ;;
   *)
     echo "Unsupported server type: $server"
     echo "Supported server types are: $(cat "$self" | egrep '\).*;;' | fgrep -v grep | sed 's/^ *//; s/).*$//' | sort | xargs echo)"
