@@ -1,12 +1,9 @@
 source 'http://rubygems.org'
 
 gem 'sinatra'
+gem 'yajl-ruby', require: 'yajl'
+gem 'multi_json'
+
 gem 'thin', require: false
 gem 'puma', require: false
 gem 'unicorn', require: false
-gem 'yajl-ruby', require: 'yajl'
-gem 'multi_json' #, '1.0.4'
-#gem 'json', '1.6.5'
-#gem 'activesupport', '3.2.1'
-#gem 'trinidad'
-
