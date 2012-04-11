@@ -13,10 +13,16 @@ class MyApp < Sinatra::Base
     map= MultiJson.decode(request.body.read)['map']
     #puts "\n#{map}\n\n"
 
-    results= {}
+    results= {
+      keys: keys=[],
+      values: values=[],
+    }
     map.each do |k,v|
-      results[v]= k
+      keys<< k
+      values<< v
     end
+    keys.sort!
+    values.sort!
 
     #puts "\n#{results.inspect}\n\n"
     #puts "\n#{results.to_json.inspect}\n\n"

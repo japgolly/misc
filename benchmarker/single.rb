@@ -15,9 +15,11 @@ exp= cfg['expected_response'] || {}
 request_options= {body: req['body'], headers: req['headers'], format: :plain}.freeze
 response= HTTParty.post(req['uri'], request_options)
 
-if exp['body'] and response.body != exp['body']
+eb= exp['body']
+if eb and response.body != eb
   puts "UNEXPECTED RESPONSE."
-  puts "\n#{response.body}\n\n#{response.body.inspect}"
+  puts "\nACTUAL:   #{response.body}"
+  puts "\nEXPECTED: #{eb}"
   exit 2
 end
 

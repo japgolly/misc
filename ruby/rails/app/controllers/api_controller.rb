@@ -8,11 +8,19 @@ class ApiController < ApplicationController
 #    puts "Req headers: #{request.headers.keys.sort.inspect}\n\n"
 #    puts "Content type: #{request.headers['CONTENT_TYPE']}\n\n"
 
-    results= {}
     map= params[:map]
+
+    results= {
+      keys: keys=[],
+      values: values=[],
+    }
     map.each do |k,v|
-      results[v]= k
+      keys<< k
+      values<< v
     end
+    keys.sort!
+    values.sort!
+
     render json: MultiJson.encode(results)
   end
 end
