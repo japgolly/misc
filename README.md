@@ -15,12 +15,14 @@ Nothing super-automated. Launch two terminals.
 
 3.   If there is a `start.sh` file then you can use that to start a server. It is run like this:
 
+         ```sh
          ./start.sh <app> <server>
 
          # Examples
          ./start.sh sinatra thin
          ./start.sh sinatra puma
          ./start.sh rails puma
+         ```
 
      If there isn't a `start.sh` then choose a subdirectory, go into it and use the start script there.
 
@@ -28,13 +30,17 @@ Nothing super-automated. Launch two terminals.
 
 5.   Choose a config `yml` file and use it with `single.rb` to issue a single request and test the server.
 
+         ```sh
          # Example
          ./single.rb api-json-ruby.yml
+         ```
 
 6.   Now call `benchmark.rb` to run the benchmark for real.
 
+         ```sh
          # Example
          ./benchmark.rb api-json-ruby.yml
+         ```
 
 Benchmarking JSON Libraries
 ---------------------------
