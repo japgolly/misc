@@ -5,11 +5,11 @@ Nothing super-automated. Launch two terminals.
 
 1.   Choose an interpretter: Ruby, JRuby, Java.
 
-     *For Ruby:* `rvm use 1.9.3`
+     **For Ruby:** `rvm use 1.9.3`
 
-     *For JRuby:* `rvm use jruby`
+     **For JRuby:** `rvm use jruby`
 
-     *For Java:* Install Maven and ensure it's on the classpath. `mvn -v`
+     **For Java:** Install Maven and ensure it's on the classpath. `mvn -v`
 
 2.   Enter the directory for the chosen interpretter. Eg. `cd ruby`
 
