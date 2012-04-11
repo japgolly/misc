@@ -1,0 +1,8 @@
+source 'http://rubygems.org'
+
+gem 'json'
+gem 'json_pure'
+gem 'oj'
+gem 'yajl-ruby', require: 'yajl'
+
+gem 'multi_json'
