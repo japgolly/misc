@@ -1,0 +1,12 @@
+benchmark:
+  warmup:
+    stop_condition: FixedTimeCondition.new 30
+  real:
+    stop_condition: FixedHitCountCondition.new 50000
+request:
+  uri: http://0.0.0.0:8338/api.json
+  body: '{"map":{"1":"David","3":"Apple","7":"Bullshit!","101":"bom booom bom","234":"lek why ya jahash why!"}}' 
+  headers:
+    Content-Type: application/json
+expected_response:
+  body: '{"David":"1","Apple":"3","Bullshit!":"7","bom booom bom":"101","lek why ya jahash why!":"234"}'
