@@ -9,20 +9,20 @@ Nothing super-automated. Launch two terminals.
 
      **For JRuby:** `rvm use jruby`
 
-     **For Java:** Install Maven and ensure it's on the classpath. `mvn -v`
+     **For Java:** Install Maven and ensure it's on the path. `mvn -v`
 
 2.   Enter the directory for the chosen interpretter. Eg. `cd ruby`
 
 3.   If there is a `start.sh` file then you can use that to start a server. It is run like this:
 
-         ```
-         ./start.sh <app> <server>
+     ```
+     ./start.sh <app> <server>
 
-         # Examples
-         ./start.sh sinatra thin
-         ./start.sh sinatra puma
-         ./start.sh rails puma
-         ```
+     # Examples
+     ./start.sh sinatra thin
+     ./start.sh sinatra puma
+     ./start.sh rails puma
+     ```
 
      If there isn't a `start.sh` then choose a subdirectory, go into it and use the start script there.
 
@@ -30,17 +30,17 @@ Nothing super-automated. Launch two terminals.
 
 5.   Choose a config `yml` file and use it with `single.rb` to issue a single request and test the server.
 
-         ```
-         # Example
-         ./single.rb api-json-ruby.yml
-         ```
+     ```
+     # Example
+     ./single.rb api-json-ruby.yml
+     ```
 
 6.   Now call `benchmark.rb` to run the benchmark for real.
 
-         ```
-         # Example
-         ./benchmark.rb api-json-ruby.yml
-         ```
+     ```
+     # Example
+     ./benchmark.rb api-json-ruby.yml
+     ```
 
 Benchmarking JSON Libraries
 ---------------------------
