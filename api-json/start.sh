@@ -34,6 +34,7 @@ case "$server" in
   thin) bundle exec thin start -p 8338 -e production ;;
   puma) RACK_ENV=production bundle exec puma -p 8338 -q ;;
   unicorn) bundle exec unicorn -p 8338 -E production ;;
+  trinidad) bundle exec trinidad -p 8338 -e production ;;
   *)
     echo "Unsupported server type: $server"
     echo "Supported server types are: $(cat "$self" | egrep '\).*;;' | fgrep -v grep | sed 's/^ *//; s/).*$//' | sort | xargs echo)"

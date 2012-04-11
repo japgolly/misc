@@ -1,0 +1,9 @@
+---
+  port: 8338
+  jruby_min_runtimes: 1 # min number of runtimes
+  jruby_max_runtimes: 16 # max number of runtimes
+
+  web_apps:
+   default:
+    extensions:
+

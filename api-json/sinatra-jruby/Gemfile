@@ -1,0 +1,9 @@
+source 'http://rubygems.org'
+
+gem 'sinatra'
+gem 'yajl-ruby', require: 'yajl'
+gem 'multi_json'
+
+gem 'jruby-openssl'
+gem 'puma', require: false
+gem 'trinidad', require: false
