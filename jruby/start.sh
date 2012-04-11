@@ -1,5 +1,9 @@
 #!/bin/bash
 
+export JRUBY_OPTS='--1.9 --server --fast'
+JRUBY=jruby
+BEXEC="$JRUBY -S bundle exec"
+
 # Parse an optional <app dir> argument
 if [ -d "$1" ]; then
   APP_DIR="$1"
@@ -24,17 +28,15 @@ self="$(cd $(dirname "$0") && pwd)/$(basename "$0")"
 
 # Enter app dir, display app/env info
 [ -z "$APP_DIR" ] || cd "$APP_DIR" || exit 2
-ruby -v
+$JRUBY -v
 echo
 bundle list || exit 3
 echo
 
 # Start server
 case "$server" in
-  thin) bundle exec thin start -p 8338 -e production ;;
-  puma) RACK_ENV=production bundle exec puma -p 8338 -q ;;
-  unicorn) bundle exec unicorn -p 8338 -E production ;;
-  trinidad) bundle exec trinidad -p 8338 -e production ;;
+  puma)     RACK_ENV=production $BEXEC puma -p 8338 -q ;;
+  trinidad) $BEXEC trinidad -p 8338 -e production ;;
   *)
     echo "Unsupported server type: $server"
     echo "Supported server types are: $(cat "$self" | egrep '\).*;;' | fgrep -v grep | sed 's/^ *//; s/).*$//' | sort | xargs echo)"
