@@ -19,11 +19,13 @@ benchmark_condition= eval cfg['benchmark']['real']['stop_condition']
 request_options= {body: req['body'], headers: req['headers'], format: :plain}.freeze
 hit= lambda do
   response= HTTParty.post(req['uri'], request_options)
-  if exp['body'] and response.body != exp['body']
-    puts "UNEXPECTED RESPONSE."
-    p response.body
-    exit 2
-  end
+#  eb= exp['body']
+#  if eb and response.body != eb
+#    puts "UNEXPECTED RESPONSE."
+#    puts "\nACTUAL:   #{response.body}"
+#    puts "\nEXPECTED: #{eb}"
+#    exit 2
+#  end
 end
 
 def pass(name, runner)
