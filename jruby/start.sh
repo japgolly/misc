@@ -1,6 +1,8 @@
 #!/bin/bash
 
 export JRUBY_OPTS='--1.9 --server --fast'
+#export JRUBY_OPTS='--1.9 -J-Djruby.thread.pooling=true -J-Djruby.compile.mode=FORCE -J-Djruby.management.enabled=false --server --fast'
+
 JRUBY=jruby
 BEXEC="$JRUBY -S bundle exec"
 
@@ -8,12 +10,10 @@ BEXEC="$JRUBY -S bundle exec"
 if [ -d "$1" ]; then
   APP_DIR="$1"
   shift
-else
-  [ ! -f config.ru ] && bad_args=1
 fi
 
 # Parse and check args
-if [ -n "$bad_args" -o $# -ne 1 ]; then
+if [ $# -ne 1 ]; then
   echo "Usage: $(basename "$0") [<app dir>] <server>"
   echo
   echo "Examples:"
@@ -29,6 +29,7 @@ self="$(cd $(dirname "$0") && pwd)/$(basename "$0")"
 # Enter app dir, display app/env info
 [ -z "$APP_DIR" ] || cd "$APP_DIR" || exit 2
 $JRUBY -v
+echo "JRUBY_OPTS=$JRUBY_OPTS"
 echo
 bundle list || exit 3
 echo
