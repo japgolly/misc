@@ -5,7 +5,6 @@ GEM
       rack (~> 1.1)
     em-synchrony (1.0.0)
       eventmachine (>= 1.0.0.beta.1)
-    eventmachine (1.0.0.beta.4)
     eventmachine (1.0.0.beta.4-java)
     goliath (0.9.4)
       async-rack
@@ -18,11 +17,13 @@ GEM
       rack (>= 1.2.2)
       rack-contrib
       rack-respond_to
-    http_parser.rb (0.5.3)
     http_parser.rb (0.5.3-java)
     http_router (0.9.7)
       rack (>= 1.0.0)
       url_mount (~> 0.2.1)
+    json (1.5.0-java)
+    json-jruby (1.5.0-java)
+      json (= 1.5.0)
     log4r (1.1.10)
     multi_json (1.2.0)
     rack (1.4.1)
@@ -33,13 +34,11 @@ GEM
       rack-accept-media-types (>= 0.6)
     url_mount (0.2.1)
       rack
-    yajl-ruby (1.1.0)
 
 PLATFORMS
   java
-  ruby
 
 DEPENDENCIES
   goliath
+  json-jruby
   multi_json
-  yajl-ruby

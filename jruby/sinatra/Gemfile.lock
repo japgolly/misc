@@ -5,6 +5,9 @@ GEM
     jruby-openssl (0.7.6.1)
       bouncy-castle-java (>= 1.5.0146.1)
     jruby-rack (1.1.5)
+    json (1.5.0-java)
+    json-jruby (1.5.0-java)
+      json (= 1.5.0)
     multi_json (1.2.0)
     puma (1.1.1)
       rack (~> 1.2)
@@ -22,7 +25,6 @@ GEM
       jruby-rack (>= 1.1.5)
       trinidad_jars (>= 1.0.2)
     trinidad_jars (1.0.3)
-    yajl-ruby (1.1.0)
 
 PLATFORMS
   java
@@ -30,8 +32,8 @@ PLATFORMS
 
 DEPENDENCIES
   jruby-openssl
+  json-jruby
   multi_json
   puma
   sinatra
   trinidad
-  yajl-ruby
