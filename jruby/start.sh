@@ -5,6 +5,7 @@ export JRUBY_OPTS='--1.9 --server --fast'
 
 JRUBY=jruby
 BEXEC="$JRUBY -S bundle exec"
+[ -n "$JAVA_HOME" ] && PATH="$JAVA_HOME/bin:$PATH"
 
 # Parse an optional <app dir> argument
 if [ -d "$1" ]; then
@@ -28,6 +29,8 @@ self="$(cd $(dirname "$0") && pwd)/$(basename "$0")"
 
 # Enter app dir, display app/env info
 [ -z "$APP_DIR" ] || cd "$APP_DIR" || exit 2
+java -version
+echo
 $JRUBY -v
 echo "JRUBY_OPTS=$JRUBY_OPTS"
 echo
