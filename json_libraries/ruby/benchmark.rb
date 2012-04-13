@@ -4,10 +4,11 @@ require 'bundler'
 Bundler.require :default
 require 'benchmark'
 
-puts "#{RUBY_DESCRIPTION}\n\n"
+#-------------------------------------------------------------------------------
 
 ENGINES= ARGV.empty? ? MultiJson::REQUIREMENT_MAP.map{|e| e[1]} : ARGV.map(&:to_sym)
 REPS= 100000
+WARMUPS= (ENV['WARMUPS'] || '1').to_i
 
 DATA= {
   a: 2,
@@ -20,6 +21,8 @@ DATA= {
   },
 }
 
+#-------------------------------------------------------------------------------
+
 def test_encode(engine)
   MultiJson.engine= engine
   for i in 1..REPS; MultiJson.encode DATA end
@@ -31,17 +34,27 @@ def test_decode(engine)
   for i in 1..REPS; MultiJson.decode data end
 end
 
-puts 'encoding'
-Benchmark.bmbm(20) do |x|
-  ENGINES.each do |e|
-    x.report("#{e}:") { test_encode e }
+def benchmark(name, method, sets=1)
+  puts name
+  Benchmark.bm(20) do |x|
+    sets.times do
+      ENGINES.each do |e|
+        x.report("#{e}:") { send method, e }
+      end
+    end
   end
+  puts
 end
+
+#-------------------------------------------------------------------------------
+
+puts "#{RUBY_DESCRIPTION}\n\n"
+puts "ENGINES: #{ENGINES}"
+puts "REPS: #{REPS}"
+puts "WARMUPS: #{WARMUPS}"
 puts
 
-puts 'decoding'
-Benchmark.bmbm(20) do |x|
-  ENGINES.each do |e|
-    x.report("#{e}:") { test_encode e }
-  end
-end
+benchmark 'Encoding (warmup)', :test_encode, WARMUPS
+benchmark 'Encoding', :test_encode
+benchmark 'Decoding (warmup)', :test_decode, WARMUPS
+benchmark 'Decoding', :test_decode
