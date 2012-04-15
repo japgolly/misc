@@ -22,25 +22,29 @@ func apiHandler(writer http.ResponseWriter, req *http.Request) {
 
   body, err := ioutil.ReadAll(req.Body)
   if err == nil {
-    result := api(string(body))
-    writer.Write([]byte(result))
-    writer.Header().Set("Content-Type", "text/json")
-    writer.Header().Set("Content-Length", string(len(result)))
-    return
+    result,err := api(string(body))
+    if err == nil {
+      writer.Write([]byte(result))
+      writer.Header().Set("Content-Type", "text/json")
+      writer.Header().Set("Content-Length", string(len(result)))
+      return
+    }
   }
 
+  fmt.Println("Failure:",err)
   log.Fatal(err)
   http.Error(writer, err.Error(), 500)
 }
 
 
-func api(request string) string {
+func api(request string) (string,error) {
   //fmt.Println(request)
+  const nilStr = ""
 
   // Decode JSON
   var j map[string]map[string]int
-  json.Unmarshal([]byte(request), &j)
-  // TODO Doesn't check error result
+  err := json.Unmarshal([]byte(request), &j)
+  if err != nil { return nilStr,err }
   //fmt.Println("Unmarshalled:", j)
 
   // Process
@@ -61,8 +65,8 @@ func api(request string) string {
   }
 
   // Encode JSON
-  result, _ := json.Marshal(results)
-  // TODO Doesn't check error result
+  result, err := json.Marshal(results)
+  if err != nil { return nilStr,err }
   //fmt.Println("Result:", string(result))
-  return string(result)
+  return string(result),nil
 }
