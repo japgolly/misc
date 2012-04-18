@@ -1,5 +1,0 @@
-source 'http://rubygems.org'
-
-gem 'goliath'
-gem 'yajl-ruby', require: 'yajl'
-gem 'multi_json'

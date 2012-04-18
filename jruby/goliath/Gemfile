@@ -1,5 +1,0 @@
-source 'http://rubygems.org'
-
-gem 'goliath'
-gem 'json-jruby'
-gem 'multi_json'

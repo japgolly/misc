@@ -1,1 +1,0 @@
-../../ruby/goliath/service.rb
