@@ -6,8 +6,12 @@ require 'benchmark'
 
 #-------------------------------------------------------------------------------
 
-ENGINES= ARGV.empty? ? MultiJson::REQUIREMENT_MAP.map{|e| e[1]} : ARGV.map(&:to_sym)
-REPS= 100000
+ENGINES= if ARGV.empty?
+           (MultiJson::REQUIREMENT_MAP.map{|e| e[1]} + [:ok_json]).uniq
+         else
+           ARGV.map(&:to_sym)
+         end
+REPS= (ENV['REPS'] || '100000').to_i
 WARMUPS= (ENV['WARMUPS'] || '1').to_i
 
 DATA= {
@@ -23,15 +27,15 @@ DATA= {
 
 #-------------------------------------------------------------------------------
 
-def test_encode(engine)
-  MultiJson.engine= engine
-  for i in 1..REPS; MultiJson.encode DATA end
+def test_writing(engine)
+  MultiJson.use engine
+  for i in 1..REPS; MultiJson.dump DATA end
 end
 
-def test_decode(engine)
-  MultiJson.engine= engine
-  data= MultiJson.encode(DATA).freeze
-  for i in 1..REPS; MultiJson.decode data end
+def test_reading(engine)
+  MultiJson.use engine
+  data= MultiJson.dump(DATA).freeze
+  for i in 1..REPS; MultiJson.load data end
 end
 
 def benchmark(name, method, sets=1)
@@ -54,7 +58,13 @@ puts "REPS: #{REPS}"
 puts "WARMUPS: #{WARMUPS}"
 puts
 
-benchmark 'Encoding (warmup)', :test_encode, WARMUPS
-benchmark 'Encoding', :test_encode
-benchmark 'Decoding (warmup)', :test_decode, WARMUPS
-benchmark 'Decoding', :test_decode
+puts '-'*66
+benchmark 'Writing (warmup)', :test_writing, WARMUPS
+benchmark 'Writing', :test_writing
+puts '-'*66
+puts
+benchmark 'Reading (warmup)', :test_reading, WARMUPS
+benchmark 'Reading', :test_reading
+puts '-'*66
+puts
+puts

@@ -1,10 +1,17 @@
 #!/bin/bash
 
 export WARMUPS=5
-BENCHMARK='jruby --1.9 -Xcompile.mode=FORCE --fast ./benchmark.rb'
+BENCHMARK='jruby --1.9 --server -Xcompile.mode=FORCE --fast ./benchmark.rb'
 
 if [ $# -gt 0 ]; then
   $BENCHMARK "$@"
 else
-  for f in json_gem json_pure oj yajl; do $BENCHMARK $f; done
+  $BENCHMARK json_gem
+  $BENCHMARK json_pure
+  $BENCHMARK oj
+
+  # These are crazily slow. Reduce reps by factor of 10.
+  export REPS=10000
+  $BENCHMARK ok_json
+  $BENCHMARK yajl
 fi
