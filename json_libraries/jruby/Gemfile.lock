@@ -1,11 +1,24 @@
+GIT
+  remote: git://github.com/guyboertje/jrjackson.git
+  revision: 3853e82dba08dc6baf44a639388b32472f531183
+  specs:
+    jrjackson (0.0.7)
+
+GIT
+  remote: git://github.com/japgolly/multi_json.git
+  revision: 2f4a92d2f60794799ca1a99273b826d139e9fef4
+  branch: new_adapter_jrjackson
+  specs:
+    multi_json (1.3.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
+    json (1.5.0)
     json (1.5.0-java)
     json-jruby (1.5.0-java)
       json (= 1.5.0)
     json_pure (1.6.6)
-    multi_json (1.3.2)
     oj (1.2.4)
     yajl-ruby (1.1.0)
 
@@ -13,8 +26,9 @@ PLATFORMS
   java
 
 DEPENDENCIES
+  jrjackson!
   json-jruby
   json_pure
-  multi_json
+  multi_json!
   oj
   yajl-ruby

@@ -6,6 +6,7 @@ BENCHMARK='jruby --1.9 --server -Xcompile.mode=FORCE --fast ./benchmark.rb'
 if [ $# -gt 0 ]; then
   $BENCHMARK "$@"
 else
+  $BENCHMARK jr_jackson
   $BENCHMARK json_gem
   $BENCHMARK json_pure
   $BENCHMARK oj

@@ -4,5 +4,6 @@ gem 'json-jruby'
 gem 'json_pure'
 gem 'oj'
 gem 'yajl-ruby', require: 'yajl'
+gem 'jrjackson', git: 'git://github.com/guyboertje/jrjackson.git'
 
-gem 'multi_json'
+gem 'multi_json', git: 'git://github.com/japgolly/multi_json.git', branch: 'new_adapter_jrjackson'
