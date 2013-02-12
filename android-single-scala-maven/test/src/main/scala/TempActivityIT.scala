@@ -2,11 +2,10 @@ package com.mycompanyname.bananas
 
 import android.test.ActivityInstrumentationTestCase2
 import android.view.View
-import com.mycompanyname.bananas.MainActivity
-import com.mycompanyname.bananas.calc.Measure
+import android.widget.Button
 import com.jayway.android.robotium.solo.Solo
 
-class MainActivityIT extends ActivityInstrumentationTestCase2[MainActivity]("com.mycompanyname.bananas", classOf[MainActivity]) {
+class TempActivityIT extends ActivityInstrumentationTestCase2[TempActivity]("com.mycompanyname.bananas", classOf[TempActivity]) {
 
   lazy private val solo = new Solo(getInstrumentation(), getActivity())
 
@@ -16,9 +15,9 @@ class MainActivityIT extends ActivityInstrumentationTestCase2[MainActivity]("com
   }
 
   @inline def find[T <: View](resId: Int): T = solo.getCurrentActivity.findViewById(resId).asInstanceOf[T]
-  // lazy private val bananas = find[Button](R.id.bananas)
+  lazy private val button = find[Button](R.id.btn)
 
   def testStuff {
-    // solo.clickOnView(bananas);
+    solo.clickOnView(button);
   }
 }
