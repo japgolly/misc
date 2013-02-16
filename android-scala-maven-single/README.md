@@ -18,6 +18,12 @@
     mvn clean install
     ```
 
+* To run Android Lint with your build, enable the `lint` profile:
+
+    ```
+    mvn clean install -P lint
+    ```
+
 * To create release:
 
     ```
