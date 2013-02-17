@@ -1,5 +1,7 @@
 ### Contents
 
+* [android-java-maven-single](android-java-maven-single): Single Android app with integration test using Maven & bunch of other tools that aid plain ol' Java dev.
+
 * [android-scala-maven-single](android-scala-maven-single): Single Android app with integration test using Maven & Scala.
 
 * [android-scala-maven-dual](android-scala-maven-dual): Free & paid Android apps using Maven & Scala.
