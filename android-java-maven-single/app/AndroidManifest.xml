@@ -13,7 +13,7 @@
 
 	<application
 		android:label="@string/app_name" >
-		<activity android:name=".MainActivity_" >
+		<activity android:name=".TempActivity_" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
