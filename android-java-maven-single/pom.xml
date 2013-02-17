@@ -17,7 +17,12 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
-		<scala.version>2.10.0</scala.version>
+		<lib.dir>${project.basedir}/../lib</lib.dir>
+		<cofoja.version>1.0-r139</cofoja.version>
+		<lombok.version>0.11.6-golly.1</lombok.version>
+		<lombok.jar>${lib.dir}/lombok-${lombok.version}.jar</lombok.jar>
+		<cofoja.jar>${lib.dir}/cofoja-${cofoja.version}.jar</cofoja.jar>
+		<cofoja.api.jar>${lib.dir}/cofoja-${cofoja.version}-api.jar</cofoja.api.jar>
 		<android.proguard.config>../proguard-dev.cfg</android.proguard.config>
 		<android.apk.debug>true</android.apk.debug>
 	</properties>
@@ -52,6 +57,28 @@
 				<groupId>com.google.code.findbugs</groupId>
 				<artifactId>annotations</artifactId>
 				<version>2.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>system</scope>
+				<systemPath>${lombok.jar}</systemPath>
+			</dependency>
+			<dependency>
+				<groupId>com.google.java.contract</groupId>
+				<artifactId>cofoja</artifactId>
+				<version>${cofoja.version}</version>
+				<scope>system</scope>
+				<systemPath>${cofoja.jar}</systemPath>
+			</dependency>
+			<dependency>
+				<groupId>com.google.java.contract</groupId>
+				<artifactId>cofoja</artifactId>
+				<version>${cofoja.version}</version>
+				<classifier>api</classifier>
+				<scope>system</scope>
+				<systemPath>${cofoja.api.jar}</systemPath>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
