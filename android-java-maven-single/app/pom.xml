@@ -13,6 +13,7 @@
 
 	<properties>
 		<androidannotations.version>2.7</androidannotations.version>
+		<outputDirectory>${project.build.directory}/classes</outputDirectory>
 	</properties>
 
 	<dependencies>
@@ -76,6 +77,8 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
+		<outputDirectory>${outputDirectory}</outputDirectory>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -96,6 +99,19 @@
 	</build>
 
 	<profiles>
+
+		<!-- Prevent Maven output disrupting Eclipse -->
+		<profile>
+			<id>eclipse</id>
+			<activation>
+				<file>
+					<exists>bin/classes</exists>
+				</file>
+			</activation>
+			<properties>
+				<outputDirectory>${project.basedir}/bin/classes</outputDirectory>
+			</properties>
+		</profile>
 
 		<!-- Contracts for Java -->
 		<profile>
