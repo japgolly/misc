@@ -3,30 +3,12 @@ import scalaz.Scalaz.Id
 import scalaz.effect.IO
 import scalaz.Free.FreeC
 import scalaz.std.function.function0Instance
+import ScalazExt._
 
 class TheRealDeal {
   private val ai = new java.util.concurrent.atomic.AtomicLong()
   def add(b: Long): Unit = ai.addAndGet(b)
   def get(): Long = ai.get
-}
-
-object ScalazCandidate {
-  def mapSuspensionFreeC[F[_], G[_], A](c: FreeC[F, A], f: F ~> G): FreeC[G, A] = {
-    type CoyonedaG[A] = Coyoneda[G, A]
-    c.mapSuspension[CoyonedaG](new (({type λ[α] = Coyoneda[F, α]})#λ ~> CoyonedaG){
-      def apply[A](a: Coyoneda[F, A]) = a.trans(f)
-    })
-  }
-
-  def coyoUnapply[F[_]: Functor]: (({type L[x] = Coyoneda[F, x]})#L ~> F) =
-    new (({type L[x] = Coyoneda[F, x]})#L ~> F) {
-      override def apply[A](m: ({type L[x] = Coyoneda[F, x]})#L[A]): F[A] = m.run
-    }
-
-  def liftFC[F[_], A](f: F[A]): FreeC[F, A] = {
-    val c: Coyoneda[F, A] = Coyoneda(f) // TODO manual cast until next scalaz ver
-    Free.liftFU(c)
-  }
 }
 
 //======================================================================================================================
@@ -67,9 +49,8 @@ object FreeK {
 
   def runReaderIo(adds: Int): Unit = {
     val p1 = build(adds)
-    val p2: Free[ReaderIO, Long] = p1.mapSuspension(CmdToReaderIO)
-    val p3: ReaderIO[Long] = p2.runM(identity)
-    val r: Long = p3.run(new TheRealDeal).unsafePerformIO()
+    val p2: ReaderIO[Long] = p1.foldMap(CmdToReaderIO)
+    val r: Long = p2.run(new TheRealDeal).unsafePerformIO()
   }
 
   def CmdToF0(rd: TheRealDeal): Cmd ~> Function0 = new (Cmd ~> Function0) {
@@ -79,10 +60,16 @@ object FreeK {
     }
   }
 
-  def runF0(adds: Int): Unit = {
+  def runF0_run(adds: Int): Unit = {
     val p1 = build(adds)
     val p2: Free[Function0, Long] = p1.mapSuspension(CmdToF0(new TheRealDeal))
     val r: Long = p2.run
+  }
+
+  def runF0_fold(adds: Int): Unit = {
+    val p1 = build(adds)
+    val p2: Function0[Long] = p1.foldMap(CmdToF0(new TheRealDeal))
+    val r: Long = p2()
   }
 
   def CmdToIO(rd: TheRealDeal): Cmd ~> IO = new (Cmd ~> IO) {
@@ -94,16 +81,14 @@ object FreeK {
 
   def runIo(adds: Int): Unit = {
     val p1 = build(adds)
-    val p2: Free[IO, Long] = p1.mapSuspension(CmdToIO(new TheRealDeal))
-    val p3: IO[Long] = p2.runM(identity)
-    val r: Long = p3.unsafePerformIO()
+    val p2: IO[Long] = p1.foldMap(CmdToIO(new TheRealDeal))
+    val r: Long = p2.unsafePerformIO()
   }
 }
 
 //======================================================================================================================
 
 object Coyo {
-  import ScalazCandidate._
 
   trait Cmd[A]
   case class Add(b: Long) extends Cmd[Unit]
@@ -130,10 +115,9 @@ object Coyo {
 
   def runReaderIo(adds: Int): Unit = {
     val p1 = build(adds)
-    val p2: FreeC[ReaderIO, Long] = mapSuspensionFreeC(p1, CmdToReaderIO)
-    val p3: Free[ReaderIO, Long] = p2.mapSuspension(coyoUnapply)
-    val p4: ReaderIO[Long] = p3.runM(identity)
-    val r: Long = p4.run(new TheRealDeal).unsafePerformIO()
+    val nt = FG_to_CFG(CmdToReaderIO)
+    val p2: ReaderIO[Long] = p1.foldMap(nt)
+    val r: Long = p2.run(new TheRealDeal).unsafePerformIO()
   }
 
   def CmdToF0(rd: TheRealDeal): Cmd ~> Function0 = new (Cmd ~> Function0) {
@@ -143,11 +127,18 @@ object Coyo {
     }
   }
 
-  def runF0(adds: Int): Unit = {
+  def runF0_fold(adds: Int): Unit = {
     val p1 = build(adds)
-    val p2: FreeC[Function0, Long] = mapSuspensionFreeC(p1, CmdToF0(new TheRealDeal))
-    val p3: Free[Function0, Long] = p2.mapSuspension(coyoUnapply)
-    val r: Long = p3.run
+    val nt = FG_to_CFG(CmdToF0(new TheRealDeal))
+    val p2: Function0[Long] = p1.foldMap(nt)
+    val r: Long = p2()
+  }
+
+  def runF0_run(adds: Int): Unit = {
+    val p1 = build(adds)
+    val nt = FG_to_CFG(CmdToF0(new TheRealDeal))
+    val p2: Free[Function0, Long] = p1.mapSuspension(nt)
+    val r: Long = p2.run
   }
 
   def CmdToIO(rd: TheRealDeal): Cmd ~> IO = new (Cmd ~> IO) {
@@ -159,10 +150,9 @@ object Coyo {
 
   def runIo(adds: Int): Unit = {
     val p1 = build(adds)
-    val p2: FreeC[IO, Long] = mapSuspensionFreeC(p1, CmdToIO(new TheRealDeal))
-    val p3: Free[IO, Long] = p2.mapSuspension(coyoUnapply)
-    val p4: IO[Long] = p3.runM(identity)
-    val r: Long = p4.unsafePerformIO()
+    val nt = FG_to_CFG(CmdToIO(new TheRealDeal))
+    val p2: IO[Long] = p1.foldMap(nt)
+    val r: Long = p2.unsafePerformIO()
   }
 }
 
@@ -170,9 +160,11 @@ object Coyo {
 
 import org.scalameter.api._
 
-object FunctionalEffectBenchmark extends PerformanceTest.Microbenchmark {
-// object FunctionalEffectBenchmark extends PerformanceTest.Quickbenchmark {
-  val sizes = Gen.exponential("size")(10, 10000, 10)
+//object FunctionalEffectBenchmark extends PerformanceTest.Microbenchmark {
+object FunctionalEffectBenchmark extends PerformanceTest.Quickbenchmark {
+
+//  val sizes = Gen.exponential("size")(10, 10000, 10)
+  val sizes = Gen.single("size")(10000)
 
   measure method "Manual" in {
     using(sizes) in { s =>
@@ -182,13 +174,17 @@ object FunctionalEffectBenchmark extends PerformanceTest.Microbenchmark {
     }
   }
 
-  measure method "Free monad -> Fn0 Trampoline" in { using(sizes) in { FreeK.runF0 } }
-  measure method "Free monad -> IO"             in { using(sizes) in { FreeK.runIo } }
-  measure method "Free monad -> Reader[IO]"     in { using(sizes) in { FreeK.runReaderIo } }
+  val s = "================================================\n::Benchmark "
 
-  measure method "Free monad & coyoneda -> Fn0 Trampoline" in { using(sizes) in { Coyo.runF0 } }
-  measure method "Free monad & coyoneda -> IO"             in { using(sizes) in { Coyo.runIo } }
-  measure method "Free monad & coyoneda -> Reader[IO]"     in { using(sizes) in { Coyo.runReaderIo } }
+  measure method s"${s}FreeM -> Fn0 Tramp (run)"  in { using(sizes) in { FreeK.runF0_run } }
+  measure method "FreeM -> Fn0 Tramp (fold)"      in { using(sizes) in { FreeK.runF0_fold } }
+  measure method "FreeM -> IO"                    in { using(sizes) in { FreeK.runIo } }
+  measure method "FreeM -> Reader[IO]"            in { using(sizes) in { FreeK.runReaderIo } }
+
+  measure method s"${s}FreeM & CoYo -> Fn0 Tramp (run)" in { using(sizes) in { Coyo.runF0_run } }
+  measure method "FreeM & CoYo -> Fn0 Tramp (fold)"     in { using(sizes) in { Coyo.runF0_fold } }
+  measure method "FreeM & CoYo -> IO"                   in { using(sizes) in { Coyo.runIo } }
+  measure method "FreeM & CoYo -> Reader[IO]"           in { using(sizes) in { Coyo.runReaderIo } }
 
 }
 
