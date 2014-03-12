@@ -84,6 +84,21 @@ object FreeK {
     val p2: IO[Long] = p1.foldMap(CmdToIO(new TheRealDeal))
     val r: Long = p2.unsafePerformIO()
   }
+
+  type ReaderF[A] = ReaderT[Function0, TheRealDeal, A]
+  implicit object CmdToReaderF extends (Cmd ~> ReaderF) {
+    def io[A](f: TheRealDeal => A) = Kleisli((rd: TheRealDeal) => () => f(rd))
+    override def apply[A](ta: Cmd[A]): ReaderF[A] = ta match {
+      case Add(n, k) => io{ rd => rd.add(n); k() }
+      case Get(k)    => io{ rd => k(rd.get) }
+    }
+  }
+
+  def runReaderF(adds: Int): Unit = {
+    val p1 = build(adds)
+    val p2: ReaderF[Long] = p1.foldMap(CmdToReaderF)
+    val r: Long = p2.run(new TheRealDeal)()
+  }
 }
 
 //======================================================================================================================
@@ -105,6 +120,7 @@ object Coyo {
       case Get    => io{ _.get }
     }
   }
+  val CmdToReaderIO_ = FG_to_CFG(CmdToReaderIO)
 
   def build(adds: Int) = {
     val add: FreeCmd[Unit] = Add(1)
@@ -115,8 +131,7 @@ object Coyo {
 
   def runReaderIo(adds: Int): Unit = {
     val p1 = build(adds)
-    val nt = FG_to_CFG(CmdToReaderIO)
-    val p2: ReaderIO[Long] = p1.foldMap(nt)
+    val p2: ReaderIO[Long] = p1.foldMap(CmdToReaderIO_)
     val r: Long = p2.run(new TheRealDeal).unsafePerformIO()
   }
 
@@ -154,14 +169,30 @@ object Coyo {
     val p2: IO[Long] = p1.foldMap(nt)
     val r: Long = p2.unsafePerformIO()
   }
+
+  type ReaderF[A] = ReaderT[Function0, TheRealDeal, A]
+  implicit object CmdToReaderF extends (Cmd ~> ReaderF) {
+    def io[A](f: TheRealDeal => A) = Kleisli((rd: TheRealDeal) => () => f(rd))
+    override def apply[A](ta: Cmd[A]): ReaderF[A] = ta match {
+      case Add(n) => io{ _.add(n) }
+      case Get    => io{ _.get }
+    }
+  }
+  val CmdToReaderF_ = FG_to_CFG(CmdToReaderF)
+
+  def runReaderF(adds: Int): Unit = {
+    val p1 = build(adds)
+    val p2: ReaderF[Long] = p1.foldMap(CmdToReaderF_)
+    val r: Long = p2.run(new TheRealDeal)()
+  }
 }
 
 //======================================================================================================================
 
 import org.scalameter.api._
 
-//object FunctionalEffectBenchmark extends PerformanceTest.Microbenchmark {
-object FunctionalEffectBenchmark extends PerformanceTest.Quickbenchmark {
+object FunctionalEffectBenchmark extends PerformanceTest.Microbenchmark {
+// object FunctionalEffectBenchmark extends PerformanceTest.Quickbenchmark {
 
 //  val sizes = Gen.exponential("size")(10, 10000, 10)
   val sizes = Gen.single("size")(10000)
@@ -178,11 +209,13 @@ object FunctionalEffectBenchmark extends PerformanceTest.Quickbenchmark {
 
   measure method s"${s}FreeM -> Fn0 Tramp (run)"  in { using(sizes) in { FreeK.runF0_run } }
   measure method "FreeM -> Fn0 Tramp (fold)"      in { using(sizes) in { FreeK.runF0_fold } }
+  measure method "FreeM -> Reader[F0]"            in { using(sizes) in { FreeK.runReaderF } }
   measure method "FreeM -> IO"                    in { using(sizes) in { FreeK.runIo } }
   measure method "FreeM -> Reader[IO]"            in { using(sizes) in { FreeK.runReaderIo } }
 
   measure method s"${s}FreeM & CoYo -> Fn0 Tramp (run)" in { using(sizes) in { Coyo.runF0_run } }
   measure method "FreeM & CoYo -> Fn0 Tramp (fold)"     in { using(sizes) in { Coyo.runF0_fold } }
+  measure method "FreeM & CoYo -> Reader[F0]"           in { using(sizes) in { Coyo.runReaderF } }
   measure method "FreeM & CoYo -> IO"                   in { using(sizes) in { Coyo.runIo } }
   measure method "FreeM & CoYo -> Reader[IO]"           in { using(sizes) in { Coyo.runReaderIo } }
 
