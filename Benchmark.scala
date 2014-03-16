@@ -1,9 +1,9 @@
 import scalaz.{Coyoneda, Free, ~>, Functor, ReaderT, Kleisli}
 import scalaz.Scalaz.Id
 import scalaz.effect.IO
-import scalaz.Free.FreeC
+import scalaz.Free.{liftFC, FreeC}
+import scalaz.Coyoneda.liftTF
 import scalaz.std.function.function0Instance
-import ScalazExt._
 
 class TheRealDeal {
   private val ai = new java.util.concurrent.atomic.AtomicLong()
@@ -120,7 +120,7 @@ object Coyo {
       case Get    => io{ _.get }
     }
   }
-  val CmdToReaderIO_ = FG_to_CFG(CmdToReaderIO)
+  val CmdToReaderIO_ = liftTF(CmdToReaderIO)
 
   def build(adds: Int) = {
     val add: FreeCmd[Unit] = Add(1)
@@ -144,14 +144,14 @@ object Coyo {
 
   def runF0_fold(adds: Int): Unit = {
     val p1 = build(adds)
-    val nt = FG_to_CFG(CmdToF0(new TheRealDeal))
+    val nt = liftTF(CmdToF0(new TheRealDeal))
     val p2: Function0[Long] = p1.foldMap(nt)
     val r: Long = p2()
   }
 
   def runF0_run(adds: Int): Unit = {
     val p1 = build(adds)
-    val nt = FG_to_CFG(CmdToF0(new TheRealDeal))
+    val nt = liftTF(CmdToF0(new TheRealDeal))
     val p2: Free[Function0, Long] = p1.mapSuspension(nt)
     val r: Long = p2.run
   }
@@ -165,7 +165,7 @@ object Coyo {
 
   def runIo(adds: Int): Unit = {
     val p1 = build(adds)
-    val nt = FG_to_CFG(CmdToIO(new TheRealDeal))
+    val nt = liftTF(CmdToIO(new TheRealDeal))
     val p2: IO[Long] = p1.foldMap(nt)
     val r: Long = p2.unsafePerformIO()
   }
@@ -178,7 +178,7 @@ object Coyo {
       case Get    => io{ _.get }
     }
   }
-  val CmdToReaderF_ = FG_to_CFG(CmdToReaderF)
+  val CmdToReaderF_ = liftTF(CmdToReaderF)
 
   def runReaderF(adds: Int): Unit = {
     val p1 = build(adds)
