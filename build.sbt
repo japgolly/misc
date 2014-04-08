@@ -5,6 +5,7 @@ libraryDependencies ++= {
   Seq(
     "com.github.axel22" %% "scalameter" % "0.4",
     "org.scalaz" %% "scalaz-core" % scalazVer,
+    "org.scalaz" %% "scalaz-concurrent" % scalazVer,
     "org.scalaz" %% "scalaz-effect" % scalazVer
   )
 }

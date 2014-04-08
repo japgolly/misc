@@ -4,6 +4,7 @@ import scalaz.effect.IO
 import scalaz.Free.{liftFC, FreeC}
 import scalaz.Coyoneda.liftTF
 import scalaz.std.function.function0Instance
+import scalaz.concurrent.Task
 
 class TheRealDeal {
   private val ai = new java.util.concurrent.atomic.AtomicLong()
@@ -122,6 +123,16 @@ object Coyo {
   }
   val CmdToReaderIO_ = liftTF(CmdToReaderIO)
 
+  type ReaderTask[A] = ReaderT[Task, TheRealDeal, A]
+  implicit object CmdToReaderTask extends (Cmd ~> ReaderTask) {
+    def io[A](f: TheRealDeal => A) = Kleisli((rd: TheRealDeal) => Task.delay{ f(rd) })
+    override def apply[A](ta: Cmd[A]): ReaderTask[A] = ta match {
+      case Add(n) => io{ _.add(n) }
+      case Get    => io{ _.get }
+    }
+  }
+  val CmdToReaderTask_ = liftTF(CmdToReaderTask)
+
   def build(adds: Int) = {
     val add: FreeCmd[Unit] = Add(1)
     val manyAdds: FreeCmd[Unit] = List.fill(adds - 1)(add).foldLeft(add)((a,b) => a >>= (_ => b))
@@ -168,6 +179,26 @@ object Coyo {
     val nt = liftTF(CmdToIO(new TheRealDeal))
     val p2: IO[Long] = p1.foldMap(nt)
     val r: Long = p2.unsafePerformIO()
+  }
+
+  def CmdToTask(rd: TheRealDeal): Cmd ~> Task = new (Cmd ~> Task) {
+    override def apply[A](m: Cmd[A]): Task[A] = m match {
+      case Add(n) => Task.delay{ rd.add(n) }
+      case Get    => Task.delay{ rd.get }
+    }
+  }
+
+  def runTask(adds: Int): Unit = {
+    val p1 = build(adds)
+    val nt = liftTF(CmdToTask(new TheRealDeal))
+    val p2: Task[Long] = p1.foldMap(nt)
+    val r: Long = p2.run
+  }
+
+  def runReaderTask(adds: Int): Unit = {
+    val p1 = build(adds)
+    val p2: ReaderTask[Long] = p1.foldMap(CmdToReaderTask_)
+    val r: Long = p2.run(new TheRealDeal).run
   }
 
   type ReaderF[A] = ReaderT[Function0, TheRealDeal, A]
@@ -218,6 +249,8 @@ object FunctionalEffectBenchmark extends PerformanceTest.Microbenchmark {
   measure method "FreeM & CoYo -> Reader[F0]"           in { using(sizes) in { Coyo.runReaderF } }
   measure method "FreeM & CoYo -> IO"                   in { using(sizes) in { Coyo.runIo } }
   measure method "FreeM & CoYo -> Reader[IO]"           in { using(sizes) in { Coyo.runReaderIo } }
+  measure method "FreeM & CoYo -> Task"                 in { using(sizes) in { Coyo.runTask } }
+  measure method "FreeM & CoYo -> Reader[Task]"         in { using(sizes) in { Coyo.runReaderTask } }
 
 }
 
