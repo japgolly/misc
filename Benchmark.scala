@@ -222,11 +222,11 @@ object Coyo {
 
 import org.scalameter.api._
 
-object FunctionalEffectBenchmark extends PerformanceTest.Microbenchmark {
-// object FunctionalEffectBenchmark extends PerformanceTest.Quickbenchmark {
+// object FunctionalEffectBenchmark extends PerformanceTest.Microbenchmark {
+object FunctionalEffectBenchmark extends PerformanceTest.Quickbenchmark {
 
 //  val sizes = Gen.exponential("size")(10, 10000, 10)
-  val sizes = Gen.single("size")(10000)
+  val sizes = Gen.single("size")(1000)
 
   measure method "Manual" in {
     using(sizes) in { s =>
