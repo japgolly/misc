@@ -1,0 +1,19 @@
+[info] # Run complete. Total time: 00:07:44
+[info]
+[info] Benchmark                  (size)  Mode  Cnt      Score     Error  Units
+[info] IntSet.mutableBitSetAdd       100  avgt   15    518.659 ±  10.344  ns/op
+[info] IntSet.mutableBitSet          100  avgt   15    586.765 ±  18.686  ns/op
+[info] IntSet.immutableBitSetEq      100  avgt   15   2141.002 ±  34.162  ns/op
+[info] IntSet.immutableBitSet        100  avgt   15   2234.601 ± 136.647  ns/op
+[info] IntSet.mutableHashSet         100  avgt   15   3097.053 ± 125.777  ns/op
+[info] IntSet.mutableSet             100  avgt   15   3150.203 ± 106.516  ns/op
+[info] IntSet.intMap                 100  avgt   15   5739.165 ± 180.090  ns/op
+[info] IntSet.immutableSet           100  avgt   15   6245.920 ±  97.035  ns/op
+[info] IntSet.immutableHashSetEq     100  avgt   15   6503.880 ± 222.058  ns/op
+[info] IntSet.immutableHashSet       100  avgt   15   6927.241 ± 149.950  ns/op
+[info] IntSet.immutableSetEq         100  avgt   15   7957.225 ± 272.613  ns/op
+[info] IntSet.mutableTreeSet         100  avgt   15   8339.693 ± 333.917  ns/op
+[info] IntSet.immutableTreeSet       100  avgt   15   8935.277 ± 229.212  ns/op
+[info] IntSet.listSetEq              100  avgt   15  28060.170 ± 556.615  ns/op
+[info] IntSet.listSet                100  avgt   15  37710.234 ± 690.049  ns/op
+
