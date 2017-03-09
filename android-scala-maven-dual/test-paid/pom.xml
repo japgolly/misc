@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.mycompanyname.bananas</groupId>
+		<artifactId>bananas</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>test-paid</artifactId>
+	<packaging>apk</packaging>
+	<name>Integration Tests: Paid</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>android</groupId>
+			<artifactId>android</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>paid</artifactId>
+			<version>${project.version}</version>
+			<type>apk</type>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>paid</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.android.robotium</groupId>
+			<artifactId>robotium-solo</artifactId>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<android.proguard.skip>false</android.proguard.skip>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>scala-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<test>
+						<debug>false</debug>
+						<createReport>true</createReport>
+					</test>
+					<proguard>
+						<jvmArguments>
+							<jvmArgument>-Xmx1024m</jvmArgument>
+						</jvmArguments>
+					</proguard>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

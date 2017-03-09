@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mycompanyname.bananas.paid.test"
+    android:versionCode="1"
+    android:versionName="1.0.0-SNAPSHOT" >
+
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:label="Bananas Integration Tests"
+        android:targetPackage="com.mycompanyname.bananas.paid" />
+
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="17" />
+
+    <application>
+        <uses-library android:name="android.test.runner" />
+    </application>
+
+</manifest>

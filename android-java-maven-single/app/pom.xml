@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.mycompanyname.bananas</groupId>
+		<artifactId>bananas</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>app</artifactId>
+	<packaging>apk</packaging>
+	<name>Bananas: App</name>
+
+	<properties>
+		<androidannotations.version>2.7</androidannotations.version>
+		<outputDirectory>${project.build.directory}/classes</outputDirectory>
+	</properties>
+
+	<dependencies>
+		<!-- Compile-time dependencies -->
+		<dependency>
+			<groupId>android</groupId>
+			<artifactId>android</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android.annotations</groupId>
+			<artifactId>annotations</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.androidannotations</groupId>
+			<artifactId>androidannotations</artifactId>
+			<version>${androidannotations.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.google.java.contract</groupId>
+			<artifactId>cofoja</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Runtime dependencies -->
+		<dependency>
+			<groupId>com.google.java.contract</groupId>
+			<artifactId>cofoja</artifactId>
+			<classifier>api</classifier>
+		</dependency>
+		<dependency>
+			<groupId>android.support</groupId>
+			<artifactId>compatibility-v4</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.androidannotations</groupId>
+			<artifactId>androidannotations-api</artifactId>
+			<version>${androidannotations.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>annotations</artifactId>
+		</dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>com.github.japgolly.android.test</groupId>
+			<artifactId>test_utils</artifactId>
+			<version>1.0.0</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
+		<outputDirectory>${outputDirectory}</outputDirectory>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<annotationProcessors>
+						<annotationProcessor>lombok.core.AnnotationProcessor</annotationProcessor>
+						<annotationProcessor>com.googlecode.androidannotations.AndroidAnnotationProcessor</annotationProcessor>
+					</annotationProcessors>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+
+		<!-- Prevent Maven output disrupting Eclipse -->
+		<profile>
+			<id>eclipse</id>
+			<activation>
+				<file>
+					<exists>bin/classes</exists>
+				</file>
+			</activation>
+			<properties>
+				<outputDirectory>${project.basedir}/bin/classes</outputDirectory>
+			</properties>
+		</profile>
+
+		<!-- Contracts for Java -->
+		<profile>
+			<id>cofoja</id>
+			<properties>
+				<contracts.directory>${project.build.directory}/contracts</contracts.directory>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.bsc.maven</groupId>
+						<artifactId>maven-processor-plugin</artifactId>
+						<version>2.1.0</version>
+						<executions>
+							<execution>
+								<id>contracts-compile</id>
+								<goals>
+									<goal>process</goal>
+								</goals>
+								<phase>process-classes</phase>
+								<configuration>
+									<outputClassDirectory>${contracts.directory}</outputClassDirectory>
+									<processors>
+										<processor>com.google.java.contract.core.apt.AnnotationProcessor</processor>
+									</processors>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<additionalClasspathElements>
+								<additionalClasspathElement>${contracts.directory}</additionalClasspathElement>
+							</additionalClasspathElements>
+							<argLine>-javaagent:${cofoja.jar}</argLine>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- Run Android Lint -->
+		<profile>
+			<id>lint</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<executions>
+							<execution>
+								<id>android-lint</id>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<exec executable="${ANDROID_HOME}/tools/lint">
+											<env key="op_opts" value="-Djava.awt.headless=true" />
+											<arg value="${project.basedir}" />
+											<arg value="--classpath" />
+											<arg value="${project.build.outputDirectory}" />
+											<arg value="--xml" />
+											<arg value="${project.build.directory}/lint-results.xml" />
+											<arg value="--disable" />
+											<arg value="ContentDescription" />
+										</exec>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+
+					<!-- Attach artifacts: signed-aligned apk -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>${apk.signed.aligned}</file>
+									<type>apk</type>
+									<classifier>signed-aligned</classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/proguard/mapping.txt</file>
+									<type>map</type>
+									<classifier>release</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+						<executions>
+							<execution>
+								<id>attach-signed-aligned</id>
+								<phase>package</phase>
+								<goals>
+									<goal>attach-artifact</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+</project>

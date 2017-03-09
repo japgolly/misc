@@ -1,0 +1,59 @@
+Normally app is:
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>library</artifactId>
+			<version>${project.version}</version>
+			<type>apklib</type>
+		</dependency>
+
+And int. test uses:
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>paid</artifactId>
+			<version>${project.version}</version>
+			<type>apk</type>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>paid</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+			<scope>protected</scope>
+		</dependency>
+
+------------------------------------------------------------------------------------------------------------------------
+But that doesn't work because the int. test unpacks the apklib and recompiles which overrides the R.class used in the
+apk which means the ids never match.
+------------------------------------------------------------------------------------------------------------------------
+
+Change app to:
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>library</artifactId>
+			<version>${project.version}</version>
+			<type>apklib</type>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+		</dependency>
+
+And int. tests to:
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>paid</artifactId>
+			<version>${project.version}</version>
+			<type>apk</type>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>paid</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+		</dependency>
+
