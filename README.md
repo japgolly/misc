@@ -1,3 +1,5 @@
+![Libs](https://rawgit.com/japgolly/misc/oss/deps-mine.gv.svg)
+
 | Library | Version |
 |---|---|
 | Microlibs | [![Latest version](https://index.scala-lang.org/japgolly/microlibs-scala/recursion/latest.svg)](https://index.scala-lang.org/japgolly/microlibs-scala/recursion) |
