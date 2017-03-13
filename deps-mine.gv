@@ -1,0 +1,24 @@
+digraph G {
+
+// node[style=filled fillcolor="#33aa33"]
+react [label="scalajs-react"]
+css [label="ScalaCSS"]
+univeq
+bm [label="scalajs-benchmark"]
+micro [label="Microlibs"]
+teststate [label="Test-State"]
+nyaya [label="Nyaya"]
+
+// Main deps [me:me]
+edge[style=bold color="#ff0000"]
+react,css -> bm
+react,univeq -> css
+univeq,nyaya,react -> teststate
+univeq -> micro
+
+// Test deps
+edge[style=dashed color="#0000ff"]
+nyaya -> react
+nyaya -> css
+
+}

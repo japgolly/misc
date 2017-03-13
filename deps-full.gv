@@ -1,0 +1,46 @@
+digraph G {
+
+scalaz
+cats
+shapeless
+monocle
+dom [label="scalajs-dom"]
+
+node[style=filled fillcolor="#33aa33"]
+react [label="scalajs-react"]
+css [label="ScalaCSS"]
+univeq
+bm [label="scalajs-benchmark"]
+micro [label="Microlibs"]
+teststate [label="Test-State"]
+nyaya [label="Nyaya"]
+
+
+// Main deps [3rd:me]
+scalaz -> monocle
+scalaz,monocle -> react
+monocle -> bm
+scalaz,monocle -> nyaya
+dom -> css
+scalaz,cats -> univeq
+scalaz -> micro
+dom,scalaz,cats -> teststate
+
+// Main deps [me:me]
+edge[style=bold color="#ff0000"]
+react,css -> bm
+react,univeq -> css
+univeq,nyaya,react -> teststate
+univeq -> micro
+
+// Test deps
+edge[style=dashed color="#888888"]
+nyaya -> react
+scalaz,nyaya -> css
+
+// Demo deps
+edge[color="#ccbb77"]
+scalaz,shapeless,cats -> bm
+monocle -> teststate
+
+}
