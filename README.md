@@ -1,6 +1,6 @@
 | Library | Version |
 |---|---|
-| Microlibs | [![Latest version](https://index.scala-lang.org/japgolly/microlibs-scala/adt-macros/latest.svg)](https://index.scala-lang.org/japgolly/microlibs-scala/adt-macros) |
+| Microlibs | [![Latest version](https://index.scala-lang.org/japgolly/microlibs-scala/recursion/latest.svg)](https://index.scala-lang.org/japgolly/microlibs-scala/recursion) |
 | Nyaya | [![Latest version](https://index.scala-lang.org/japgolly/nyaya/nyaya-core/latest.svg)](https://index.scala-lang.org/japgolly/nyaya/core) |
 | scalajs-benchmark | [![Latest version](https://index.scala-lang.org/japgolly/scalajs-benchmark/benchmark/latest.svg)](https://index.scala-lang.org/japgolly/scalajs-benchmark/benchmark) |
 | scalajs-react | [![Latest version](https://index.scala-lang.org/japgolly/scalajs-react/core/latest.svg)](https://index.scala-lang.org/japgolly/scalajs-react/core) |
