@@ -24,5 +24,16 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'prod.js'
-    }
+    },
+
+    // See webpack's bin/convert-argv.js for what -p expands to
+    plugins: [
+        new webpack.LoaderOptionsPlugin({
+            minimize: true,
+        }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('production')
+        }),
+        new webpack.optimize.UglifyJsPlugin({})
+    ]
 }
