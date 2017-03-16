@@ -53,5 +53,6 @@ object Experiment {
      // "com.github.japgolly.scalajs-react" %%% "extra"        % Ver.ScalaJsReact,
      // "com.github.japgolly.scalajs-react" %%% "ext-scalaz72" % Ver.ScalaJsReact,
      // "com.github.japgolly.scalajs-react" %%% "ext-monocle"  % Ver.ScalaJsReact,
+      scalaJSOutputWrapper := ("", """exports["demo"]["Main"]().main();"""),
       scalaJSModuleKind := ModuleKind.CommonJSModule)
 }

@@ -19,7 +19,7 @@ module.exports = {
         }]
     },
 
-    entry: ['react', 'react-dom', './launcher-dev.js'],
+    entry: ['react', 'react-dom', './target/scala-2.12/demo-fastopt.js'],
 
     output: {
         path: path.resolve(__dirname, 'dist'),

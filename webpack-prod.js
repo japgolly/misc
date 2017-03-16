@@ -19,7 +19,7 @@ module.exports = {
         }]
     },
 
-    entry: ['react', 'react-dom', './launcher-prod.js'],
+    entry: ['react', 'react-dom', './target/scala-2.12/demo-opt.js'],
 
     output: {
         path: path.resolve(__dirname, 'dist'),
