@@ -2,6 +2,11 @@
   "name": "experiment-webpack",
   "version": "1.0.0",
   "devDependencies": {
+    "expose-loader": "^0.7.3",
     "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
   }
 }

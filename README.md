@@ -5,3 +5,5 @@
 
 # History
 * `yarn add --dev webpack`
+* `yarn add --dev expose-loader`
+* `yarn add react react-dom`
