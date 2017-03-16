@@ -1,0 +1,7 @@
+{
+  "name": "experiment-webpack",
+  "version": "1.0.0",
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  }
+}

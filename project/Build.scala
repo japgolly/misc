@@ -59,8 +59,9 @@ object Experiment {
     .settings(
       name := "webapp",
       libraryDependencies ++= Seq(
-        "com.github.japgolly.scalajs-react" %%% "core"         % Ver.ScalaJsReact))
+        "com.github.japgolly.scalajs-react" %%% "core"         % Ver.ScalaJsReact),
      // "com.github.japgolly.scalajs-react" %%% "extra"        % Ver.ScalaJsReact,
      // "com.github.japgolly.scalajs-react" %%% "ext-scalaz72" % Ver.ScalaJsReact,
      // "com.github.japgolly.scalajs-react" %%% "ext-monocle"  % Ver.ScalaJsReact,
+      scalaJSModuleKind := ModuleKind.CommonJSModule)
 }

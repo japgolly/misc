@@ -22,3 +22,6 @@ tmp
 .scala_dependencies
 release.properties
 .sass-cache
+node_modules
+dist/dev.js
+dist/prod.js
