@@ -19,7 +19,7 @@ module.exports = {
         }]
     },
 
-    entry: './launcher-prod.js',
+    entry: ['react', 'react-dom', './launcher-prod.js'],
 
     output: {
         path: path.resolve(__dirname, 'dist'),
