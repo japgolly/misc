@@ -1,0 +1,18 @@
+#!/bin/bash
+cd "$(dirname "$(readlink -e "$0")")" || exit 1
+
+args="$@"
+[ $# -eq 0 ] && args=(dev prod)
+
+webpack="./webpack --progress"
+
+clear
+for a in "${args[@]}"; do
+  echo "[$a]"
+  case "$a" in
+    dev)  $webpack --config webpack-dev.js ;;
+    prod) $webpack --config webpack-prod.js -p ;;
+    *) echo What?
+  esac
+  echo
+done

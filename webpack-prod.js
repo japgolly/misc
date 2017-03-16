@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
 
@@ -18,9 +19,10 @@ module.exports = {
         }]
     },
 
-    entry: './launcher.js',
+    entry: './launcher-prod.js',
 
     output: {
-        filename: 'dist/dev.js'
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'prod.js'
     }
 }
