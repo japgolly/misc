@@ -37,13 +37,7 @@ object Experiment {
 
   // ==============================================================================================
   lazy val root = Project("root", file("."))
-    .settings(name := "experiment-webpack")
-    .aggregate(webapp)
-    .configure(commonSettings, addCommandAliases(
-      "/"   -> "project root",
-      "L"   -> "root/publishLocal",
-      "C"   -> "root/clean",
-      "T"   -> ";root/clean;root/test",
+    .configure(commonSettings, utestSettings, addCommandAliases(
       "c"   -> "compile",
       "tc"  -> "test:compile",
       "t"   -> "test",
@@ -52,12 +46,8 @@ object Experiment {
       "cc"  -> ";clean;compile",
       "ctc" -> ";clean;test:compile",
       "ct"  -> ";clean;test"))
-
-  // ==============================================================================================
-  lazy val webapp = project
-    .configure(commonSettings, utestSettings)
     .settings(
-      name := "webapp",
+      name := "demo",
       libraryDependencies ++= Seq(
         "com.github.japgolly.scalajs-react" %%% "core"         % Ver.ScalaJsReact),
      // "com.github.japgolly.scalajs-react" %%% "extra"        % Ver.ScalaJsReact,
