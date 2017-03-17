@@ -2,7 +2,7 @@ const Path = require('path');
 
 const sjs = (c) => './target/scala-2.12/demo-' + c + '.js';
 
-const config = {
+const config = (ctx) => ({
 
     module: {
         rules: [{
@@ -46,14 +46,15 @@ const config = {
     entry: [
         'react', 'react-dom',
         'bootstrap/dist/css/bootstrap.css',
+        sjs(ctx.sjs_mode),
     ],
 
     output: {
         path: Path.resolve(__dirname, 'dist'),
+        filename: ctx.output_filename + '.js',
     },
-};
+});
 
 module.exports = {
-    sjs,
     config
 };

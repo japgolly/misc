@@ -1,15 +1,12 @@
 const Common = require('./webpack-common.js');
 const Merge = require('webpack-merge');
 
-module.exports = Merge(Common.config, {
+const ctx = {
+    sjs_mode: 'fastopt',
+    output_filename: 'dev',
+};
 
-    entry: [
-        Common.sjs('fastopt'),
-    ],
-
-    output: {
-        filename: 'dev.js',
-    },
+module.exports = Merge(Common.config(ctx), {
 
     module: {
         rules: [{

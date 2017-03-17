@@ -4,15 +4,12 @@ const Webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 
-module.exports = Merge(Common.config, {
+const ctx = {
+    sjs_mode: 'opt',
+    output_filename: 'prod',
+};
 
-    entry: [
-        Common.sjs('opt'),
-    ],
-
-    output: {
-        filename: 'prod.js',
-    },
+module.exports = Merge(Common.config(ctx), {
 
     module: {
         rules: [{
