@@ -48,6 +48,12 @@ module.exports = {
         ]
     },
 
+    resolve: {
+        alias: {
+            'experiment-webpack': path.resolve(__dirname, 'local-modules'),
+        },
+    },
+
     entry: [
         'react', 'react-dom',
         'bootstrap/dist/css/bootstrap.css',
