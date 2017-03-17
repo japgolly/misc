@@ -11,3 +11,4 @@
 * `yarn add --dev css-loader style-loader file-loader url-loader`
 * `yarn add bootstrap@3`
 * `yarn add --dev extract-text-webpack-plugin`
+* `yarn add --dev webpack-merge`
