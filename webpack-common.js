@@ -56,7 +56,7 @@ const config = {
 
     output: {
         path: Path.resolve(__dirname, 'dist'),
-    }
+    },
 }
 
 module.exports = {

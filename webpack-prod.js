@@ -14,6 +14,7 @@ module.exports = Merge(Common.config, {
     },
 
     plugins: [
+
         // See webpack's bin/convert-argv.js for what -p expands to
         new Webpack.LoaderOptionsPlugin({
             minimize: true,
@@ -22,6 +23,7 @@ module.exports = Merge(Common.config, {
             'process.env.NODE_ENV': JSON.stringify('production')
         }),
         new Webpack.optimize.UglifyJsPlugin({}),
+
         // Externalise CSS
         new ExtractTextPlugin({
             filename: 'assets/main.css',
@@ -29,6 +31,9 @@ module.exports = Merge(Common.config, {
             // filename: 'assets/[contenthash].css',
             // allChunks: false,
         }),
+
+        // Don't emit anything when errors exist
+        new Webpack.NoEmitOnErrorsPlugin(),
     ]
 
 });
