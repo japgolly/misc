@@ -22,25 +22,19 @@ const config = {
             // url-loader?limit=n means encode the file inline with base64 if the filesize < n, else make it a
             // separate url/link/request.
             {
-                test: /\.css$/,
-                loader: "style-loader?name=/assets/[hash].[ext]!css-loader"
-            }, {
                 test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
                 loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=/assets/[hash].[ext]'
-            },
-            {
+            }, {
                 test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
                 loader: 'url-loader?limit=10000&mimetype=application/octet-stream&name=/assets/[hash].[ext]'
-            },
-            {
+            }, {
                 test: /\.(?:jpe?g|eot(\?v=\d+\.\d+\.\d+)?)$/,
                 loader: 'file-loader?name=/assets/[hash].[ext]'
-            },
-            {
+            }, {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
                 loader: 'url-loader?limit=10000&mimetype=image/svg+xml&name=/assets/[hash].[ext]'
             },
-        ]
+        ],
     },
 
     resolve: {
@@ -57,7 +51,7 @@ const config = {
     output: {
         path: Path.resolve(__dirname, 'dist'),
     },
-}
+};
 
 module.exports = {
     sjs,

@@ -9,6 +9,13 @@ module.exports = Merge(Common.config, {
 
     output: {
         filename: 'dev.js',
-    }
+    },
+
+    module: {
+        rules: [{
+            test: /\.css$/,
+            loader: "style-loader?name=/assets/[hash].[ext]!css-loader",
+        }]
+    },
 
 });

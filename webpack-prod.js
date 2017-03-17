@@ -13,6 +13,16 @@ module.exports = Merge(Common.config, {
         filename: 'prod.js',
     },
 
+    module: {
+        rules: [{
+            test: /\.css$/,
+            use: ExtractTextPlugin.extract({
+                fallback: 'style-loader',
+                use: 'css-loader',
+            }),
+        }]
+    },
+
     plugins: [
 
         // See webpack's bin/convert-argv.js for what -p expands to
