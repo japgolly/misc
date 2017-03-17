@@ -38,7 +38,7 @@ module.exports = {
                 loader: 'url-loader?limit=10000&mimetype=application/octet-stream&name=/assets/[hash].[ext]'
             },
             {
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.(?:jpe?g|eot(\?v=\d+\.\d+\.\d+)?)$/,
                 loader: 'file-loader?name=/assets/[hash].[ext]'
             },
             {
@@ -48,7 +48,11 @@ module.exports = {
         ]
     },
 
-    entry: ['react', 'react-dom', './assets.js', './target/scala-2.12/demo-opt.js'],
+    entry: [
+        'react', 'react-dom',
+        'bootstrap/dist/css/bootstrap.css',
+        './target/scala-2.12/demo-opt.js'
+    ],
 
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -66,10 +70,10 @@ module.exports = {
         new webpack.optimize.UglifyJsPlugin({}),
         // Externalise CSS
         new ExtractTextPlugin({
-          filename: 'assets/main.css',
-          allChunks: true,
-          // filename: 'assets/[contenthash].css',
-          // allChunks: false,
+            filename: 'assets/main.css',
+            allChunks: true,
+            // filename: 'assets/[contenthash].css',
+            // allChunks: false,
         }),
     ]
 }

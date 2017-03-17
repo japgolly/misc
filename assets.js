@@ -1,1 +1,3 @@
-import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
+module.exports = {
+    magpie: require('./magpie.jpg'),
+};

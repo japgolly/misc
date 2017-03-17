@@ -33,7 +33,7 @@ module.exports = {
                 loader: 'url-loader?limit=10000&mimetype=application/octet-stream&name=/assets/[hash].[ext]'
             },
             {
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.(?:jpe?g|eot(\?v=\d+\.\d+\.\d+)?)$/,
                 loader: 'file-loader?name=/assets/[hash].[ext]'
             },
             {
@@ -43,7 +43,11 @@ module.exports = {
         ]
     },
 
-    entry: ['react', 'react-dom', './assets.js', './target/scala-2.12/demo-fastopt.js'],
+    entry: [
+        'react', 'react-dom',
+        'bootstrap/dist/css/bootstrap.css',
+        './target/scala-2.12/demo-fastopt.js'
+    ],
 
     output: {
         path: path.resolve(__dirname, 'dist'),
