@@ -25,3 +25,4 @@ release.properties
 node_modules
 dist/dev.js
 dist/prod.js
+dist/assets

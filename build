@@ -16,3 +16,6 @@ for a in "${args[@]}"; do
   esac
   echo
 done
+
+tree dist
+

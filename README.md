@@ -8,3 +8,5 @@
 * `yarn add --dev expose-loader`
 * `yarn add react react-dom`
 * `yarn add google-map-react`
+* `yarn add --dev css-loader style-loader file-loader url-loader`
+* `yarn add bootstrap@3`
