@@ -3,6 +3,16 @@
 1. [Configure Node.JS](https://gist.github.com/japgolly/775314a0cb24e33653b059b8f8540250)
 2. `yarn install`
 
+# Building
+1. `sbt fastOptJS fullOptJS`
+2. `./build`
+
+# Running
+1. `./serve.sh`
+2. Open in browser:
+  * http://localhost:4000/dev.html
+  * http://localhost:4000/prod.html
+
 
 # Features
 
