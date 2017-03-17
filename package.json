@@ -4,6 +4,7 @@
   "devDependencies": {
     "css-loader": "^0.27.3",
     "expose-loader": "^0.7.3",
+    "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
     "style-loader": "^0.14.1",
     "url-loader": "^0.5.8",

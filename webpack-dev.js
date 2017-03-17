@@ -22,23 +22,23 @@ module.exports = {
             // separate url/link/request.
             {
                 test: /\.css$/,
-                loader: "style-loader?name=assets/[hash].[ext]!css-loader"
+                loader: "style-loader?name=/assets/[hash].[ext]!css-loader"
             }, {
                 test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-                // loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=assets/[hash].[ext]'
-                loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=assets/[hash].[ext]'
+                // loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=/assets/[hash].[ext]'
+                loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=/assets/[hash].[ext]'
             },
             {
                 test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url-loader?limit=10000&mimetype=application/octet-stream&name=assets/[hash].[ext]'
+                loader: 'url-loader?limit=10000&mimetype=application/octet-stream&name=/assets/[hash].[ext]'
             },
             {
                 test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'file-loader?name=assets/[hash].[ext]'
+                loader: 'file-loader?name=/assets/[hash].[ext]'
             },
             {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url-loader?limit=10000&mimetype=image/svg+xml&name=assets/[hash].[ext]'
+                loader: 'url-loader?limit=10000&mimetype=image/svg+xml&name=/assets/[hash].[ext]'
             },
         ]
     },
