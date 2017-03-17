@@ -27,7 +27,7 @@
 - [ ] Hash filenames
   - [x] Images & fonts
   - [ ] CSS links
-- [ ] gzip
+- [x] gzip
 - [ ] webpack dev server
 - [ ] SJS test deps
 - [ ] scalajs-bundler
@@ -44,3 +44,4 @@
 * `yarn add bootstrap@3`
 * `yarn add --dev extract-text-webpack-plugin`
 * `yarn add --dev webpack-merge`
+* `yarn add --dev compression-webpack-plugin`

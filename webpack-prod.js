@@ -2,6 +2,7 @@ const Common = require('./webpack-common.js');
 const Merge = require('webpack-merge');
 const Webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = Merge(Common.config, {
 
@@ -36,7 +37,7 @@ module.exports = Merge(Common.config, {
 
         // Externalise CSS
         new ExtractTextPlugin({
-            filename: 'assets/main.css',
+            filename: 'assets/prod.css',
             allChunks: true,
             // filename: 'assets/[contenthash].css',
             // allChunks: false,
@@ -44,6 +45,14 @@ module.exports = Merge(Common.config, {
 
         // Don't emit anything when errors exist
         new Webpack.NoEmitOnErrorsPlugin(),
+
+        new CompressionPlugin({
+            asset: "[path].gz[query]",
+            algorithm: "gzip",
+            test: /\.(js|css|svg|ttf)$/,
+            // threshold: 4096,
+            // minRatio: 0.8,
+        })
     ]
 
 });
