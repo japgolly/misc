@@ -1,9 +1,9 @@
 const Path = require('path');
+const HtmlPlugin = require('html-webpack-plugin');
 
 const sjs = (c) => './target/scala-2.12/demo-' + c + '.js';
 
 const config = (ctx) => ({
-
     module: {
         rules: [{
                 test: require.resolve('react'),
@@ -23,16 +23,16 @@ const config = (ctx) => ({
             // separate url/link/request.
             {
                 test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=/assets/[hash].[ext]'
+                loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=' + ctx.assetDir + ctx.assetFile,
             }, {
                 test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url-loader?limit=10000&mimetype=application/octet-stream&name=/assets/[hash].[ext]'
+                loader: 'url-loader?limit=10000&mimetype=application/octet-stream&name=' + ctx.assetDir + ctx.assetFile,
             }, {
                 test: /\.(?:jpe?g|eot(\?v=\d+\.\d+\.\d+)?)$/,
-                loader: 'file-loader?name=/assets/[hash].[ext]'
+                loader: 'file-loader?name=' + ctx.assetDir + ctx.assetFile,
             }, {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url-loader?limit=10000&mimetype=image/svg+xml&name=/assets/[hash].[ext]'
+                loader: 'url-loader?limit=10000&mimetype=image/svg+xml&name=' + ctx.assetDir + ctx.assetFile,
             },
         ],
     },
@@ -50,11 +50,20 @@ const config = (ctx) => ({
     ],
 
     output: {
-        path: Path.resolve(__dirname, 'dist'),
-        filename: ctx.output_filename + '.js',
+        path: Path.resolve(__dirname, 'dist', ctx.mode),
+        publicPath: '/' + ctx.mode + '/',
+        filename: ctx.output_filename,
     },
+
+    plugins: [
+      new HtmlPlugin(Object.assign({}, ctx.htmlOptions || {}, {
+        title: 'demo [' + ctx.mode + ']',
+        template: 'local_module/index.html',
+        filename: 'index.html',
+      })),
+    ],
 });
 
 module.exports = {
-    config
+    config,
 };

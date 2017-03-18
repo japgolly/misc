@@ -23,6 +23,3 @@ tmp
 release.properties
 .sass-cache
 node_modules
-dist/dev.js*
-dist/prod.js*
-dist/assets

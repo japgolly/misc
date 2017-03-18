@@ -10,8 +10,8 @@
 # Running
 1. `./serve.sh`
 2. Open in browser:
-  * http://localhost:4000/dev.html
-  * http://localhost:4000/prod.html
+  * http://localhost:4000/dev/
+  * http://localhost:4000/prod/
 
 
 # Features
@@ -24,9 +24,12 @@
 - [ ] Use CDN
 - [ ] Output multiple JS files
 - [x] `require` bundle assets from SJS
-- [ ] Hash filenames
+- [x] Hash filenames
   - [x] Images & fonts
-  - [ ] CSS links
+  - [x] CSS links
+- [x] HTML integration
+  - [x] links
+  - [x] minification
 - [x] gzip
 - [ ] webpack dev server
 - [ ] SJS test deps
@@ -45,3 +48,4 @@
 * `yarn add --dev extract-text-webpack-plugin`
 * `yarn add --dev webpack-merge`
 * `yarn add --dev compression-webpack-plugin`
+* `yarn add --dev html-webpack-plugin`

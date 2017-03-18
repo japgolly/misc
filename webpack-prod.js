@@ -6,7 +6,17 @@ const CompressionPlugin = require("compression-webpack-plugin");
 
 const ctx = {
     sjs_mode: 'opt',
-    output_filename: 'prod',
+    mode: 'prod',
+    assetDir: '/a/',
+    assetFile: '[hash].[ext]',
+    output_filename: '[hash].js',
+
+    htmlOptions: {
+        minify: {
+            removeComments: true,
+            collapseWhitespace: true,
+        },
+    },
 };
 
 module.exports = Merge(Common.config(ctx), {
@@ -34,10 +44,8 @@ module.exports = Merge(Common.config(ctx), {
 
         // Externalise CSS
         new ExtractTextPlugin({
-            filename: 'assets/prod.css',
+            filename: 'a/[contenthash].css',
             allChunks: true,
-            // filename: 'assets/[contenthash].css',
-            // allChunks: false,
         }),
 
         // Don't emit anything when errors exist

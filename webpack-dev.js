@@ -3,7 +3,10 @@ const Merge = require('webpack-merge');
 
 const ctx = {
     sjs_mode: 'fastopt',
-    output_filename: 'dev',
+    mode: 'dev',
+    assetDir: '/assets/',
+    assetFile: '[name].[ext]',
+    output_filename: 'dev.js',
 };
 
 module.exports = Merge(Common.config(ctx), {
@@ -11,7 +14,7 @@ module.exports = Merge(Common.config(ctx), {
     module: {
         rules: [{
             test: /\.css$/,
-            loader: "style-loader?name=/assets/[hash].[ext]!css-loader",
+            loader: 'style-loader?name=' + ctx.assetDir + ctx.assetFile + '!css-loader',
         }]
     },
 
