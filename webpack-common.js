@@ -39,7 +39,7 @@ const config = (ctx) => ({
 
     resolve: {
         alias: {
-            'experiment-webpack': Path.resolve(__dirname, 'local-modules'),
+            'experiment-webpack': Path.resolve(__dirname, 'local_module'),
         },
     },
 
