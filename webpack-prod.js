@@ -9,7 +9,7 @@ const ctx = {
     mode: 'prod',
     assetDir: '/a/',
     assetFile: '[hash].[ext]',
-    output_filename: '[hash].js',
+    output_filename: '[chunkhash].js',
 
     htmlOptions: {
         minify: {

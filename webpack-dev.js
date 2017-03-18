@@ -6,7 +6,7 @@ const ctx = {
     mode: 'dev',
     assetDir: '/assets/',
     assetFile: '[name].[ext]',
-    output_filename: 'dev.js',
+    output_filename: '[name].js',
 };
 
 module.exports = Merge(Common.config(ctx), {

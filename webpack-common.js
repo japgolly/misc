@@ -1,4 +1,5 @@
 const Path = require('path');
+const Webpack = require('webpack');
 const HtmlPlugin = require('html-webpack-plugin');
 
 const sjs = (c) => './target/scala-2.12/demo-' + c + '.js';
@@ -43,11 +44,14 @@ const config = (ctx) => ({
         },
     },
 
-    entry: [
-        'react', 'react-dom',
-        'bootstrap/dist/css/bootstrap.css',
-        sjs(ctx.sjs_mode),
-    ],
+    entry: {
+        react: ['react', 'react-dom'],
+        main: [
+            'react', 'react-dom',
+            'bootstrap/dist/css/bootstrap.css',
+            sjs(ctx.sjs_mode),
+        ],
+    },
 
     output: {
         path: Path.resolve(__dirname, 'dist', ctx.mode),
@@ -56,11 +60,14 @@ const config = (ctx) => ({
     },
 
     plugins: [
-      new HtmlPlugin(Object.assign({}, ctx.htmlOptions || {}, {
-        title: 'demo [' + ctx.mode + ']',
-        template: 'local_module/index.html',
-        filename: 'index.html',
-      })),
+        new Webpack.optimize.CommonsChunkPlugin({
+            name: 'react'
+        }),
+        new HtmlPlugin(Object.assign({}, ctx.htmlOptions || {}, {
+            title: 'demo [' + ctx.mode + ']',
+            template: 'local_module/index.html',
+            filename: 'index.html',
+        })),
     ],
 });
 

@@ -22,7 +22,7 @@
 - [x] Use local assets
 - [x] Separate dev/prod processes
 - [ ] Use CDN
-- [ ] Output multiple JS files
+- [x] Output multiple JS files
 - [x] `require` bundle assets from SJS
 - [x] Hash filenames
   - [x] Images & fonts
