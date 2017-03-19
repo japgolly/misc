@@ -45,7 +45,7 @@ const config = (ctx) => ({
     },
 
     entry: {
-        react: ['react', 'react-dom'],
+        // react: ['react', 'react-dom'],
         main: [
             'react', 'react-dom',
             'bootstrap/dist/css/bootstrap.css',
@@ -60,9 +60,17 @@ const config = (ctx) => ({
     },
 
     plugins: [
+        // new Webpack.optimize.CommonsChunkPlugin({
+        //     name: 'react',
+        // }),
         new Webpack.optimize.CommonsChunkPlugin({
-            name: 'react'
+            name: 'vendor',
+            minChunks: (m) => m.context && m.context.indexOf('node_modules') !== -1,
         }),
+        // new Webpack.optimize.CommonsChunkPlugin({
+        //     name: 'manifest',
+        //     minChunks: Infinity,
+        // }),
         new HtmlPlugin(Object.assign({}, ctx.htmlOptions || {}, {
             title: 'demo [' + ctx.mode + ']',
             template: 'local_module/index.html',
