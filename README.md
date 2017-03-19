@@ -21,7 +21,7 @@
 - [x] Use assets from some JS lib (CSS + images)
 - [x] Use local assets
 - [x] Separate dev/prod processes
-- [ ] Use CDN
+- [ ] Use CDN - pending https://github.com/jantimon/html-webpack-plugin/issues/613
 - [x] Output multiple JS files
 - [x] `require` bundle assets from SJS
 - [x] Hash filenames
