@@ -31,7 +31,6 @@
   - [x] links
   - [x] minification
 - [x] gzip
-- [ ] webpack dev server
 - [ ] SJS test deps
 - [ ] scalajs-bundler
   - [ ] main (dev/prod)
