@@ -3,8 +3,10 @@ package demo
 import scalajs.js
 import scalajs.js.annotation._
 
-@JSImport("experiment-webpack/assets", JSImport.Namespace)
-@js.native
-object Assets extends js.Object {
-  val magpie: String = js.native
+object Assets {
+
+  @JSImport("experiment-webpack/assets", "magpie")
+  @js.native
+  private object _magpie extends js.Any
+  def magpie = _magpie.asInstanceOf[String]
 }
