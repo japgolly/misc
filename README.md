@@ -31,7 +31,7 @@
   - [x] links
   - [x] minification
 - [x] gzip
-- [ ] SJS test deps
+- [x] SJS test deps
 - [scalajs-bundler](https://github.com/japgolly/misc/tree/scalajs-bundler)
 
 

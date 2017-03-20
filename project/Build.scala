@@ -8,6 +8,7 @@ object Experiment {
     val ScalaJsReact  = "1.0.0-RC1"
     val ReactJs       = "15.4.2"
     val MTest         = "0.4.5"
+    val Microlibs     = "1.5"
   }
 
   type PE = Project => Project
@@ -29,6 +30,7 @@ object Experiment {
       libraryDependencies   += "com.lihaoyi" %%% "utest" % Ver.MTest % Test,
       testFrameworks        += new TestFramework("utest.runner.Framework"),
       requiresDOM           := true)
+    .settings(inConfig(Test)(Webpack.testSettings))
 
   def addCommandAliases(m: (String, String)*): PE = {
     val s = m.map(p => addCommandAlias(p._1, p._2)).reduce(_ ++ _)
@@ -49,10 +51,9 @@ object Experiment {
     .settings(
       name := "demo",
       libraryDependencies ++= Seq(
-        "com.github.japgolly.scalajs-react" %%% "core"         % Ver.ScalaJsReact),
-     // "com.github.japgolly.scalajs-react" %%% "extra"        % Ver.ScalaJsReact,
-     // "com.github.japgolly.scalajs-react" %%% "ext-scalaz72" % Ver.ScalaJsReact,
-     // "com.github.japgolly.scalajs-react" %%% "ext-monocle"  % Ver.ScalaJsReact,
+        "com.github.japgolly.scalajs-react" %%% "core" % Ver.ScalaJsReact,
+        "com.github.japgolly.scalajs-react" %%% "test" % Ver.ScalaJsReact % Test,
+        "com.github.japgolly.microlibs" %%% "test-util" % Ver.Microlibs % Test),
       scalaJSOutputWrapper := ("", """exports["demo"]["Main"]().main();"""),
       scalaJSModuleKind := ModuleKind.CommonJSModule)
 }
