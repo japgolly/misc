@@ -1,24 +1,23 @@
 const Path = require('path');
 const Webpack = require('webpack');
 const HtmlPlugin = require('html-webpack-plugin');
+const Merge = require('webpack-merge');
 
-const sjs = (c) => './target/scala-2.12/demo-' + c + '.js';
+const config = (ctx) => Merge(require('./target/scala-2.12/scalajs-bundler/main/scalajs.webpack.config'), config2(ctx));
 
-const config = (ctx) => ({
+// Can't do this because of https://github.com/scalacenter/scalajs-bundler/issues/113
+// const entryPoints = (ctx) => {
+//   const e = {}
+//   const key = "demo-" + ctx.sjs_mode;
+//   e[key] = [
+//     'bootstrap/dist/css/bootstrap.css',
+//   ]
+//   return e;
+// };
+
+const config2 = (ctx) => ({
     module: {
-        rules: [{
-                test: require.resolve('react'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'React'
-                }]
-            }, {
-                test: require.resolve('react-dom'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'ReactDOM'
-                }]
-            },
+        rules: [
             // https://medium.com/@victorleungtw/how-to-use-webpack-with-react-and-bootstrap-b94d33765970#.xrvg55omh
             // url-loader?limit=n means encode the file inline with base64 if the filesize < n, else make it a
             // separate url/link/request.
@@ -44,20 +43,11 @@ const config = (ctx) => ({
         },
     },
 
-    entry: {
-        // react: ['react', 'react-dom'],
-        main: [
-            'react', 'react-dom',
-            'bootstrap/dist/css/bootstrap.css',
-            sjs(ctx.sjs_mode),
-        ],
-    },
-
-    output: {
-        path: Path.resolve(__dirname, 'dist', ctx.mode),
-        publicPath: '/' + ctx.mode + '/',
-        filename: ctx.output_filename,
-    },
+    // output: {
+    //     path: Path.resolve(__dirname, 'dist', ctx.mode),
+    //     publicPath: '/' + ctx.mode + '/',
+    //     filename: ctx.output_filename,
+    // },
 
     plugins: [
         // new Webpack.optimize.CommonsChunkPlugin({
@@ -73,7 +63,7 @@ const config = (ctx) => ({
         // }),
         new HtmlPlugin(Object.assign({}, ctx.htmlOptions || {}, {
             title: 'demo [' + ctx.mode + ']',
-            template: 'local_module/index.html',
+            template: '../../../../local_module/index.html',
             filename: 'index.html',
         })),
     ],

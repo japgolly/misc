@@ -33,7 +33,7 @@
 - [x] gzip
 - [ ] SJS test deps
 - [ ] scalajs-bundler
-  - [ ] main (dev/prod)
+  - [x] main (dev/prod)
   - [ ] test
 
 

@@ -1,4 +1,4 @@
-const Common = require('./webpack-common.js');
+const Common = require('../../../../webpack-common.js');
 const Merge = require('webpack-merge');
 const Webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
