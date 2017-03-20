@@ -5,6 +5,9 @@ const HtmlPlugin = require('html-webpack-plugin');
 const sjs = (c) => './target/scala-2.12/demo-' + c + '.js';
 
 const config = (ctx) => ({
+
+    bail: true,
+
     module: {
         rules: [
             // https://medium.com/@victorleungtw/how-to-use-webpack-with-react-and-bootstrap-b94d33765970#.xrvg55omh

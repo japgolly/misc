@@ -27,11 +27,11 @@ module.exports = {
         },
     },
 
-    // plugins: [
-    //   new Webpack.DefinePlugin({
-    //       'process.env.NODE_ENV': JSON.stringify('production')
-    //   }),
-    // ],
+    plugins: [
+      new Webpack.DefinePlugin({
+          'process.env.NODE_ENV': JSON.stringify('production')
+      }),
+    ],
 
     module: {
         rules: [
