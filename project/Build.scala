@@ -55,5 +55,6 @@ object Experiment {
         "com.github.japgolly.scalajs-react" %%% "test" % Ver.ScalaJsReact % Test,
         "com.github.japgolly.microlibs" %%% "test-util" % Ver.Microlibs % Test),
       scalaJSOutputWrapper := ("", """exports["demo"]["Main"]().main();"""),
+      scalaJSOutputWrapper in Test := ("", """exports["demo"]["TestAssets"]().prepare();"""),
       scalaJSModuleKind := ModuleKind.CommonJSModule)
 }

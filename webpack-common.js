@@ -6,19 +6,7 @@ const sjs = (c) => './target/scala-2.12/demo-' + c + '.js';
 
 const config = (ctx) => ({
     module: {
-        rules: [{
-                test: require.resolve('react'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'React'
-                }]
-            }, {
-                test: require.resolve('react-dom'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'ReactDOM'
-                }]
-            },
+        rules: [
             // https://medium.com/@victorleungtw/how-to-use-webpack-with-react-and-bootstrap-b94d33765970#.xrvg55omh
             // url-loader?limit=n means encode the file inline with base64 if the filesize < n, else make it a
             // separate url/link/request.
@@ -47,7 +35,6 @@ const config = (ctx) => ({
     entry: {
         // react: ['react', 'react-dom'],
         main: [
-            'react', 'react-dom',
             'bootstrap/dist/css/bootstrap.css',
             sjs(ctx.sjs_mode),
         ],

@@ -12,8 +12,6 @@ module.exports = {
 
     entry: {
         main: [
-            'react', 'react-dom',
-            'react-addons-test-utils',
             './test-loader.js',
         ],
     },
@@ -36,25 +34,7 @@ module.exports = {
     // ],
 
     module: {
-        rules: [{
-                test: require.resolve('react'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'React'
-                }]
-            }, {
-                test: require.resolve('react-dom'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'ReactDOM'
-                }]
-            }, {
-                test: require.resolve('react-addons-test-utils'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'React.addons.TestUtils'
-                }]
-            },
+        rules: [
             // https://medium.com/@victorleungtw/how-to-use-webpack-with-react-and-bootstrap-b94d33765970#.xrvg55omh
             // url-loader?limit=n means encode the file inline with base64 if the filesize < n, else make it a
             // separate url/link/request.

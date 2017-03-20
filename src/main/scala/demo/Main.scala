@@ -6,6 +6,7 @@ import scala.scalajs.js.JSApp
 object Main extends JSApp {
 
   override def main(): Unit = {
+    Assets.requireExternal()
     val component = DemoPage.Component()
     val target = dom.document.getElementById("target")
     component.renderIntoDOM(target)
