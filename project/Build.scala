@@ -5,7 +5,7 @@ object Experiment {
 
   object Ver {
     val Scala         = "2.12.1"
-    val ScalaJsReact  = "1.0.0-RC1"
+    val ScalaJsReact  = "1.0.0-RC2"
     val ReactJs       = "15.4.2"
     val MTest         = "0.4.5"
     val Microlibs     = "1.5"
