@@ -20,6 +20,7 @@
 - [x] Use some JS lib with `@JSImport`
 - [x] Use assets from some JS lib (CSS + images)
 - [x] Use local assets
+- [ ] Source maps - pending https://github.com/webpack/webpack/issues/4518
 - [x] Separate dev/prod processes
 - [x] Use CDN - pending https://github.com/jantimon/html-webpack-plugin/issues/613
 - [x] Output multiple JS files
