@@ -22,7 +22,6 @@
 - [x] Use local assets
 - [ ] Source maps - pending https://github.com/webpack/webpack/issues/4518
 - [x] Separate dev/prod processes
-- [x] Use CDN - pending https://github.com/jantimon/html-webpack-plugin/issues/613
 - [x] Output multiple JS files
 - [x] `require` bundle assets from SJS
 - [x] Hash filenames
@@ -33,6 +32,10 @@
   - [x] minification
 - [x] gzip
 - [x] SJS test deps
+- [ ] Externals
+  - [ ] Local module
+  - [ ] Local script
+  - [x] Use CDN - pending https://github.com/jantimon/html-webpack-plugin/issues/613
 - [scalajs-bundler](https://github.com/japgolly/misc/tree/scalajs-bundler)
 
 
