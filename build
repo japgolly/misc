@@ -1,20 +1,12 @@
 #!/bin/bash
 cd "$(dirname "$(readlink -e "$0")")" || exit 1
 
-args="$@"
-[ $# -eq 0 ] && args=(dev prod)
-
 webpack="./webpack --progress"
+rollup="node_modules/.bin/rollup"
 
-clear
-for a in "${args[@]}"; do
-  echo "[$a]"
-  case "$a" in
-    dev)  rm -rf dist/dev;  $webpack --config webpack-dev.js ;;
-    prod) rm -rf dist/prod; $webpack --config webpack-prod.js ;;
-    *) echo What?
-  esac
-  echo
-done
+$webpack --config webpack-dev.js
+$webpack --config webpack-prod.js
+$rollup -c rollup.dev.js
+$rollup -c rollup.prod.js
 
-tree dist
+ls -l /tmp/*react*.js
