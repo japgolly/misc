@@ -19,7 +19,6 @@ object Webpack {
     Seq(
       bundle := bundleTask.value,
       emitSourceMaps := false, // https://github.com/webpack/webpack/issues/4518
-      scalaJSOutputWrapper := ("", ""),
       loadedTestFrameworks := testFrameworkTask.value
     )
 

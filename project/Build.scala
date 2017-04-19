@@ -4,9 +4,8 @@ import org.scalajs.sbtplugin.ScalaJSPlugin, ScalaJSPlugin.autoImport._
 object Experiment {
 
   object Ver {
-    val Scala         = "2.12.1"
+    val Scala         = "2.12.2"
     val ScalaJsReact  = "1.0.0-RC2"
-    val ReactJs       = "15.4.2"
     val MTest         = "0.4.5"
     val Microlibs     = "1.5"
   }
@@ -54,7 +53,8 @@ object Experiment {
         "com.github.japgolly.scalajs-react" %%% "core" % Ver.ScalaJsReact,
         "com.github.japgolly.scalajs-react" %%% "test" % Ver.ScalaJsReact % Test,
         "com.github.japgolly.microlibs" %%% "test-util" % Ver.Microlibs % Test),
-      scalaJSOutputWrapper := ("", """exports["demo"]["Main"]().main();"""),
-      scalaJSOutputWrapper in Test := ("", """exports["demo"]["TestAssets"]().prepare();"""),
+      scalaJSUseMainModuleInitializer := true,
+      scalaJSUseMainModuleInitializer in Test := true, // Doesn't seem to work
+      mainClass in Test := Some("demo.TestAssets"),
       scalaJSModuleKind := ModuleKind.CommonJSModule)
 }
