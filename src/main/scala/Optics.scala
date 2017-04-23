@@ -36,6 +36,9 @@ object Optics {
         }
     }
 
+  def compose[F[_, _], S, T, A, B, X, Y](f: Optic[F, S, T, A, B], g: Optic[F, A, B, X, Y]): Optic[F, S, T, X, Y] =
+    f compose g
+
   // ===================================================================================================================
 
   def testLens[S, T, A, B](lens: Lens[S, T, A, B])(s: S)(f: A => B): T = {
