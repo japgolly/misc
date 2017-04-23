@@ -27,4 +27,18 @@ object Instances {
     override def choiceR[A, B, X](p: A => B) = _.right.map(p)
   }
 
+  // Can't define Choice[Forget[R, ?, ?]]
+  // Which means no view on prisms which makes sense
+  // Choice[Forget[R, ?, ?]] can be defined where R has a Monoid which it does for Option which is how prisms normally work
+  implicit def forget[R]: Strong[Forget[R, ?, ?]] = {
+    type F[A, B] = Forget[R, A, B]
+    new Strong[F]  {
+      override def lmap[A, B, X](p: F[A, B])(f: X => A) = p.contramap(f)
+      override def rmap[A, B, Y](p: F[A, B])(g: B => Y) = p.subst
+      override def dimap[A, B, X, Y](p: F[A, B])(f: X => A, g: B => Y) = p.contramap(f).subst
+      override def strongL[A, B, X](p: F[A, B]) = Forget(ax => p.run(ax._1))
+      override def strongR[A, B, X](p: F[A, B]) = Forget(ax => p.run(ax._2))
+    }
+  }
+
 }
