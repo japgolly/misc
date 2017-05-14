@@ -8,7 +8,7 @@ scalacOptions := List(
 	"-Ywarn-inaccessible",
 	"-feature", "-language:postfixOps", "-language:implicitConversions", "-language:higherKinds", "-language:existentials")
 
-addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.3")
+//addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.3")
 
 triggeredMessage := Watched.clearWhenTriggered
 
