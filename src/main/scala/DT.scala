@@ -50,6 +50,7 @@ object TypeMember {
   // [error]  required: A
   // [error]       case _: FS.type => ""
   // [error]                          ^
+  // THIS WORKS IN DOTTY!
   /*
   def test2b[A](f: FAux[A]): A =
     f match {
