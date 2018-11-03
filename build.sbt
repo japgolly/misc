@@ -1,16 +1,20 @@
 name := "Misc"
 
-scalaVersion := "2.12.2"
+scalaVersion := "2.12.7"
 
 scalacOptions := List(
-	"-unchecked",
-	"-deprecation",
-	"-Ypartial-unification",
-	"-Ypatmat-exhaust-depth", "off",
-	"-Ywarn-inaccessible",
-	"-feature", "-language:postfixOps", "-language:implicitConversions", "-language:higherKinds", "-language:existentials")
+  "-unchecked",
+  "-deprecation",
+  "-Xsource:2.13",
+  "-Ypartial-unification",
+  "-Ypatmat-exhaust-depth", "off",
+  "-Ywarn-inaccessible",
+  "-feature", "-language:postfixOps", "-language:implicitConversions", "-language:higherKinds", "-language:existentials")
 
-addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.3")
+//libraryDependencies += "org.graalvm.js" % "js" % "1.0.0-rc8"
 
-triggeredMessage := Watched.clearWhenTriggered
+libraryDependencies += "org.graalvm.sdk" % "graal-sdk" % "1.0.0-rc8"
 
+addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.8")
+
+fork in run := true
