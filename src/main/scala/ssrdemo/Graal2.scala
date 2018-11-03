@@ -29,7 +29,6 @@ class Graal2 {
 
   def test(warmup: Boolean): Future[Unit] = Future {
     println("=" * 80)
-    println("start")
 
     implicit val ctx = Context.newBuilder("js").engine(engine).build()
     ctx.enter()
@@ -58,9 +57,9 @@ class Graal2 {
 
     ctx.leave()
     ctx.close()
-    println("done")
   }
 
   Await.result(test(true), 2 minutes)
   Await.result(test(false), 2 minutes)
+  println("=" * 80)
 }
