@@ -33,13 +33,7 @@ object Main {
 
 // ===========================================================================================================
 
-import javax.websocket.ClientEndpoint
-import javax.websocket.CloseReason
-import javax.websocket.OnClose
-import javax.websocket.OnError
-import javax.websocket.OnMessage
-import javax.websocket.OnOpen
-import javax.websocket.Session
+import javax.websocket._
 import javax.websocket.server.ServerEndpoint
 
 @ClientEndpoint
@@ -64,35 +58,27 @@ import javax.websocket.server.ServerEndpoint
 // ===========================================================================================================
 
 import java.net.URI
-import javax.websocket.ContainerProvider
-import javax.websocket.Session
-import javax.websocket.WebSocketContainer
 import org.eclipse.jetty.util.component.LifeCycle
 
 object EventClient {
   def main(args: Array[String]): Unit = {
     val uri = URI.create("ws://localhost:8080/events/")
-    try {
-      val container = ContainerProvider.getWebSocketContainer
-      try { // Attempt Connect
-        val session = container.connectToServer(classOf[EventSocket], uri)
-        // Send a message
-        session.getBasicRemote.sendText("Hello")
-        // Close session
-        session.close()
-      } finally {
-        // Force lifecycle stop when done with container.
-        // This is to free up threads and resources that the
-        // JSR-356 container allocates. But unfortunately
-        // the JSR-356 spec does not handle lifecycles (yet)
-        container match {
-          case l: LifeCycle => l.stop()
-          case _ => ()
-        }
+    val container = ContainerProvider.getWebSocketContainer
+    try { // Attempt Connect
+      val session = container.connectToServer(classOf[EventSocket], uri)
+      // Send a message
+      session.getBasicRemote.sendText("Hello")
+      // Close session
+      session.close()
+    } finally {
+      // Force lifecycle stop when done with container.
+      // This is to free up threads and resources that the
+      // JSR-356 container allocates. But unfortunately
+      // the JSR-356 spec does not handle lifecycles (yet)
+      container match {
+        case l: LifeCycle => l.stop()
+        case _ => ()
       }
-    } catch {
-      case t: Throwable =>
-        t.printStackTrace(System.err)
     }
   }
 }
