@@ -13,3 +13,10 @@ scalacOptions := List(
 
 addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.9")
 addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.0-M4")
+
+libraryDependencies += "org.eclipse.jetty.aggregate" % "jetty-all" % "9.4.14.v20181114"
+libraryDependencies += "org.redisson" % "redisson" % "3.10.2"
+
+// Allow ctrl-c to kill forked tasks without killing SBT
+// cancelable in Global := true
+
