@@ -22,3 +22,5 @@ tmp
 .scala_dependencies
 release.properties
 .sass-cache
+.bloop
+.metals
