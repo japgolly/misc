@@ -12,6 +12,7 @@ import javax.websocket.server
 import javax.websocket.server.PathParam
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer
+import org.redisson.api.RTopic
 
 object Main {
   def newRedissonClient() = {
@@ -19,8 +20,11 @@ object Main {
     cfg
       .useSingleServer()
       .setAddress("redis://127.0.0.1:6379")
-      .setConnectionMinimumIdleSize(4)
-      .setConnectionPoolSize(4)
+      .setConnectionMinimumIdleSize(1)
+      .setConnectionPoolSize(1)
+        .setSubscriptionConnectionMinimumIdleSize(1)
+        .setSubscriptionConnectionPoolSize(1)
+        .setSubscriptionsPerConnection(1)
     Redisson.create(cfg)
   }
 
@@ -73,9 +77,29 @@ object Main8082 {def main(args: Array[String]): Unit = Main(8082)}
 import javax.websocket._
 import javax.websocket.server.ServerEndpoint
 
+class ShittyState {
+  import ShittyGlobalState._
+
+  private var m = List.empty[Conn]
+
+  def apply[A](f: List[Conn] => (List[Conn], A)): A =
+    synchronized {
+      val (m2, a) = f(m)
+      m = m2
+      a
+    }
+}
+
+object ShittyGlobalState {
+  val shittyState = new ShittyState
+
+  case class Conn(sessionId: String, topic: RTopic, listenerId: Int)
+}
+
 @ClientEndpoint
 @ServerEndpoint(value = "/project/{id}")
 class EventSocket {
+  import ShittyGlobalState._
 
   // TODO Is this EventSocket class created per-server / per-WS-client / per-WS-req?
   // Consider any local state/resources (like the Redis client)
@@ -93,7 +117,9 @@ class EventSocket {
       s.getBasicRemote.sendText(s"[$channel] $msg")
     }
 
-    topic.addListener(classOf[String], listener)
+    val listenerId = topic.addListener(classOf[String], listener)
+
+    shittyState(m => (Conn(s.getId, topic, listenerId) :: m, ()))
   }
 
   @OnMessage
@@ -103,8 +129,11 @@ class EventSocket {
   }
 
   @OnClose
-  def onWebSocketClose(reason: CloseReason): Unit = {
+  def onWebSocketClose(s: Session, reason: CloseReason): Unit = {
     println("Socket Closed: " + reason)
+
+    val ours = shittyState(_.partition(_.sessionId != s.getId))
+    ours.foreach(c => c.topic.removeListener(c.listenerId))
   }
 
   @OnError
