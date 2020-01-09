@@ -14,6 +14,9 @@
 .metadata
 .idea
 .idea_modules
+.classpath
+.project
+.settings
 target
 sloccount.sc
 tmp
@@ -25,3 +28,4 @@ release.properties
 
 .metals
 .bloop
+.vscode
