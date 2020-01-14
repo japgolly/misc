@@ -1,0 +1,127 @@
+Java Environment:
+-----------------
+ java.home = /opt/graalvm-ce-19.2.1/jre (null)
+ java.vm.vendor = Oracle Corporation (null)
+ java.vm.version = 25.232-b07-jvmci-19.2-b03 (null)
+ java.vm.name = OpenJDK 64-Bit GraalVM CE 19.2.1 (null)
+ java.vm.info = mixed mode (null)
+ java.runtime.name = OpenJDK Runtime Environment (null)
+ java.runtime.version = 1.8.0_232-20191008104205.buildslave.jdk8u-src-tar--b07 (null)
+ java.io.tmpdir = /tmp (null)
+ user.dir = /shipreq (null)
+ user.language = en (null)
+ user.country = AU (null)
+
+Jetty Environment:
+-----------------
+ jetty.version = 9.4.25.v20191220
+ jetty.tag.version = master
+ jetty.home = /jetty
+ jetty.base = /shipreq
+
+Config Search Order:
+--------------------
+ <command-line>
+ ${jetty.base} -> /shipreq
+ ${jetty.home} -> /jetty
+
+
+JVM Arguments:
+--------------
+ -XX:+UnlockExperimentalVMOptions
+ -XX:+UseCGroupMemoryLimitForHeap
+ -XX:MaxRAMFraction=1
+ -XX:+UseG1GC
+ -XX:+EagerJVMCI
+ -XX:+PrintFlagsFinal
+ -XX:+UnlockDiagnosticVMOptions
+ -XX:+PrintActiveCpus
+ -XshowSettings:vm
+
+System Properties:
+------------------
+ graal.MitigateSpeculativeExecutionAttacks = None (/shipreq/start.d/jvm.ini)
+ graal.ShowConfiguration = verbose (/shipreq/start.d/jvm.ini)
+ run.mode = staging (<command-line>)
+
+Properties:
+-----------
+ graal.MitigateSpeculativeExecutionAttacks = None
+ graal.ShowConfiguration = verbose
+ java.version = 1.8.0_232
+ java.version.major = 1
+ java.version.micro = 0
+ java.version.minor = 8
+ java.version.platform = 8
+ jetty.base = /shipreq
+ jetty.base.uri = file:///shipreq
+ jetty.deploy.monitoredDir = webapps
+ jetty.deploy.scanInterval = 0
+ jetty.home = /jetty
+ jetty.home.uri = file:///jetty
+ jetty.http.idleTimeout = 180000
+ jetty.httpConfig.sendServerVersion = false
+ jetty.ssl.idleTimeout = 180000
+ org.eclipse.jetty.util.log.class = org.eclipse.jetty.util.log.Slf4jLog
+ run.mode = staging
+
+Jetty Server Classpath:
+-----------------------
+Version Information on 42 entries in the classpath.
+Note: order presented here is how they would appear on the classpath.
+      changes to the --module=name command line options will be reflected here.
+ 0:                   1.7.30 | ${jetty.base}/webapps/ROOT/WEB-INF/lib/slf4j-api-1.7.30.jar
+ 1:                    1.2.3 | ${jetty.base}/webapps/ROOT/WEB-INF/lib/logback-classic-1.2.3.jar
+ 2:                    1.2.3 | ${jetty.base}/webapps/ROOT/WEB-INF/lib/logback-core-1.2.3.jar
+ 3:                    6.3.0 | ${jetty.base}/webapps/ROOT/WEB-INF/lib/logstash-logback-encoder-6.3.jar
+ 4:                   2.10.1 | ${jetty.base}/webapps/ROOT/WEB-INF/lib/jackson-annotations-2.10.1.jar
+ 5:                   2.10.1 | ${jetty.base}/webapps/ROOT/WEB-INF/lib/jackson-core-2.10.1.jar
+ 6:                   2.10.1 | ${jetty.base}/webapps/ROOT/WEB-INF/lib/jackson-databind-2.10.1.jar
+ 7:                   2.10.1 | ${jetty.base}/webapps/ROOT/WEB-INF/lib/jackson-dataformat-yaml-2.10.1.jar
+ 8:                    0.8.0 | ${jetty.base}/webapps/ROOT/WEB-INF/lib/simpleclient_logback-0.8.0.jar
+ 9:                    0.8.0 | ${jetty.base}/webapps/ROOT/WEB-INF/lib/simpleclient_common-0.8.0.jar
+10:                    0.8.0 | ${jetty.base}/webapps/ROOT/WEB-INF/lib/simpleclient-0.8.0.jar
+11:      1.4.1.v201005082020 | ${jetty.home}/lib/mail/javax.mail.glassfish-1.4.1.v201005082020.jar
+12:                    (dir) | ${jetty.base}/resources
+13:                    3.1.0 | ${jetty.home}/lib/servlet-api-3.1.jar
+14:                 3.1.0.M0 | ${jetty.home}/lib/jetty-schemas-3.1.jar
+15:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-http-9.4.25.v20191220.jar
+16:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-server-9.4.25.v20191220.jar
+17:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-xml-9.4.25.v20191220.jar
+18:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-util-9.4.25.v20191220.jar
+19:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-io-9.4.25.v20191220.jar
+20:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-jndi-9.4.25.v20191220.jar
+21:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-security-9.4.25.v20191220.jar
+22:                      1.3 | ${jetty.home}/lib/transactions/javax.transaction-api-1.3.jar
+23:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-servlet-9.4.25.v20191220.jar
+24:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-webapp-9.4.25.v20191220.jar
+25:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-plus-9.4.25.v20191220.jar
+26:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-annotations-9.4.25.v20191220.jar
+27:                      7.2 | ${jetty.home}/lib/annotations/asm-7.2.jar
+28:                      7.2 | ${jetty.home}/lib/annotations/asm-analysis-7.2.jar
+29:                      7.2 | ${jetty.home}/lib/annotations/asm-commons-7.2.jar
+30:                      7.2 | ${jetty.home}/lib/annotations/asm-tree-7.2.jar
+31:                      1.3 | ${jetty.home}/lib/annotations/javax.annotation-api-1.3.jar
+32:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-client-9.4.25.v20191220.jar
+33:         9.4.25.v20191220 | ${jetty.home}/lib/jetty-deploy-9.4.25.v20191220.jar
+34:                      1.0 | ${jetty.home}/lib/websocket/javax.websocket-api-1.0.jar
+35:         9.4.25.v20191220 | ${jetty.home}/lib/websocket/javax-websocket-client-impl-9.4.25.v20191220.jar
+36:         9.4.25.v20191220 | ${jetty.home}/lib/websocket/javax-websocket-server-impl-9.4.25.v20191220.jar
+37:         9.4.25.v20191220 | ${jetty.home}/lib/websocket/websocket-api-9.4.25.v20191220.jar
+38:         9.4.25.v20191220 | ${jetty.home}/lib/websocket/websocket-client-9.4.25.v20191220.jar
+39:         9.4.25.v20191220 | ${jetty.home}/lib/websocket/websocket-common-9.4.25.v20191220.jar
+40:         9.4.25.v20191220 | ${jetty.home}/lib/websocket/websocket-server-9.4.25.v20191220.jar
+41:         9.4.25.v20191220 | ${jetty.home}/lib/websocket/websocket-servlet-9.4.25.v20191220.jar
+
+Jetty Active XMLs:
+------------------
+ ${jetty.home}/etc/jetty-bytebufferpool.xml
+ ${jetty.home}/etc/jetty-threadpool.xml
+ ${jetty.home}/etc/jetty.xml
+ ${jetty.home}/etc/jetty-webapp.xml
+ ${jetty.home}/etc/jetty-plus.xml
+ ${jetty.home}/etc/jetty-annotations.xml
+ ${jetty.home}/etc/jetty-deploy.xml
+ ${jetty.home}/etc/jetty-gzip.xml
+ ${jetty.home}/etc/jetty-http.xml
+
