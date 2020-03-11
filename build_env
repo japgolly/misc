@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -euo pipefail
+
+cd "$(dirname "$0")"
+
+SBT_OPTS="-Dsbt.supershell=never -Duser.home=/ -Dsbt.global.base=/.sbt -Dsbt.boot.directory=/.sbt -Dsbt.ivy.home=/.ivy2"
+
+args=(
+  -t
+  --rm
+  --user $(id -u):$(id -g)
+  -v "$(pwd)":/bug:rw
+  -w /bug
+  -e HOME=/
+  -e "SBT_OPTS=$SBT_OPTS"
+  -e "sbt=sbt $SBT_OPTS"
+)
+
+sbtDirs=(
+  .cache
+  .coursier
+  .ivy2
+  .sbt
+)
+
+for f in "${sbtDirs[@]}"; do
+  [ -e "$HOME/$f" ] && args+=( -v "$HOME/$f:/$f":rw )
+done
+
+if [ $# -eq 0 ]; then
+  args+=(-i)
+  cmd=(bash)
+else
+  cmd=(sbt $SBT_OPTS "$@")
+fi
+
+full=(docker run "${args[@]}" japgolly/shipreq-dev-build_env "${cmd[@]}")
+clear
+echo "> ${full[@]}"
+echo
+exec "${full[@]}"
