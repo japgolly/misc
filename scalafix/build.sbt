@@ -29,10 +29,12 @@ lazy val rules = project.settings(
 )
 
 lazy val input = project.settings(
+  scalaVersion := "2.13.1",
   skip in publish := true
 )
 
 lazy val output = project.settings(
+  scalaVersion := "2.13.1",
   skip in publish := true
 )
 
