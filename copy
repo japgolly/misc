@@ -1,0 +1,28 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")"
+
+[ $# -ne 1 ] && echo "Usage: $0 <src>" && exit 1
+src="$1"
+tgt="$(pwd)/shipreq"
+tmp=/tmp/$(date +%Y%m%d-%H%M%S)-$$.zip
+
+prepare="zip $tmp"
+function finds {
+  dir="$1"
+  shift
+  find "$dir" -name '*.scala' "$@"
+}
+
+cd "$src"
+
+$prepare project/*.properties
+find -name '*.sbt' | xargs $prepare
+finds project | xargs $prepare
+find frontend -name AssetManifest.scala | xargs $prepare
+
+rm -rf "$tgt"
+mkdir "$tgt"
+cd "$tgt"
+echo
+unzip "$tmp"
