@@ -1,0 +1,299 @@
+version: '2.4'
+
+volumes:
+  data-prometheus:
+
+services:
+
+  postgres:
+    image: shipreq/dev/postgres
+    container_name: shipreq_dev_postgres
+    ports:
+      - $PORT_POSTGRES:5432
+    environment:
+      - POSTGRES_DB=$POSTGRES_DB
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+    logging:
+      driver: none
+    cpus: 1
+    mem_limit: 400m
+
+  redis:
+    image: bitnami/redis:5.0.5
+    container_name: shipreq_dev_redis
+    ports:
+      - $PORT_REDIS:6379
+    environment:
+      - REDIS_PASSWORD=sqd
+    logging:
+      driver: none
+    mem_limit: 200m
+
+  taskman:
+    image: shipreq/taskman
+    container_name: shipreq_dev_taskman
+    links:
+      - postgres
+    volumes:
+      - ./taskman:/taskman/conf:ro
+    environment:
+      - db.host=postgres
+      - db.database=$POSTGRES_DB
+      - db.username=$POSTGRES_USER
+      - db.password=$POSTGRES_PASSWORD
+      - LOG_LEVEL_ROOT=INFO
+      - LOG_LEVEL_SHIPREQ=DEBUG
+    cpus: 2
+    mem_limit: 300m
+
+  webapp:
+    image: shipreq/webapp
+    container_name: shipreq_dev_webapp
+    links:
+      - postgres
+      - redis
+      - jaeger
+    ports:
+      - $PORT_SHIPREQ_WEBAPP:8080
+    volumes:
+      - ./webapp:/mnt/import:ro
+    environment:
+      - db.host=postgres
+      - db.database=$POSTGRES_DB
+      - db.username=$POSTGRES_USER
+      - db.password=$POSTGRES_PASSWORD
+      - redis.password=sqd
+      - redis.url=redis://redis:6379
+      - run.mode=staging
+      - shipreq.analytics_proxy.url=http://localhost:$PORT_ANALYTICS_PROXY
+      - shipreq.url=http://localhost:$PORT_SHIPREQ_WEBAPP
+      - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+      - JAEGER_REPORTER_FLUSH_INTERVAL=2000
+      - JAEGER_SAMPLER_TYPE=const
+      - JAEGER_SAMPLER_PARAM=1
+      - IMPORT_VOL=/mnt/import
+      - LOG_LEVEL_ROOT=INFO
+      - LOG_LEVEL_SHIPREQ=DEBUG
+    cpus: 2
+    mem_limit: 1856m # 2.25*1024 - 448 for Taskman
+
+  analytics_proxy:
+    image: shipreq/analytics_proxy
+    container_name: shipreq_dev_analytics_proxy
+    ports:
+      - $PORT_ANALYTICS_PROXY:80
+    cpus: 2
+    mem_limit: 64m
+
+  ##################################################################################################
+  # DevOps: Metrics
+
+  node_exporter:
+    image: shipreq/ops/node_exporter
+    container_name: shipreq_dev_node_exporter
+    # network_mode: host
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    command:
+      - '--path.rootfs=/rootfs'
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|host|etc)($$|/)'
+      # Disable on-by-default collectors
+      - --no-collector.arp          # Exposes ARP statistics from /proc/net/arp. 	Linux
+      - --no-collector.bcache       # Exposes bcache statistics from /sys/fs/bcache/. 	Linux
+      - --no-collector.bonding      # Exposes the number of configured and active slaves of Linux bonding interfaces. 	Linux
+      #- --no-collector.conntrack    # Shows conntrack statistics (does nothing if no /proc/sys/net/netfilter/ present). 	Linux
+      #- --no-collector.cpu          # Exposes CPU statistics 	Darwin, Dragonfly, FreeBSD, Linux, Solaris
+      #- --no-collector.cpufreq      # Exposes CPU frequency statistics 	Linux, Solaris
+      #- --no-collector.diskstats    # Exposes disk I/O statistics. 	Darwin, Linux, OpenBSD
+      #- --no-collector.edac         # Exposes error detection and correction statistics. 	Linux
+      - --no-collector.entropy      # Exposes available entropy. 	Linux
+      #- --no-collector.exec         # Exposes execution statistics. 	Dragonfly, FreeBSD
+      #- --no-collector.filefd       # Exposes file descriptor statistics from /proc/sys/fs/file-nr. 	Linux
+      #- --no-collector.filesystem   # Exposes filesystem statistics, such as disk space used. 	Darwin, Dragonfly, FreeBSD, Linux, OpenBSD
+      - --no-collector.hwmon        # Expose hardware monitoring and sensor data from /sys/class/hwmon/. 	Linux
+      - --no-collector.infiniband   # Exposes network statistics specific to InfiniBand and Intel OmniPath configurations. 	Linux
+      - --no-collector.ipvs         # Exposes IPVS status from /proc/net/ip_vs and stats from /proc/net/ip_vs_stats. 	Linux
+      #- --no-collector.loadavg      # Exposes load average. 	Darwin, Dragonfly, FreeBSD, Linux, NetBSD, OpenBSD, Solaris
+      - --no-collector.mdadm        # Exposes statistics about devices in /proc/mdstat (does nothing if no /proc/mdstat present). 	Linux
+      #- --no-collector.meminfo      # Exposes memory statistics. 	Darwin, Dragonfly, FreeBSD, Linux, OpenBSD
+      #- --no-collector.netclass     # Exposes network interface info from /sys/class/net/ 	Linux
+      #- --no-collector.netdev       # Exposes network interface statistics such as bytes transferred. 	Darwin, Dragonfly, FreeBSD, Linux, OpenBSD
+      #- --no-collector.netstat      # Exposes network statistics from /proc/net/netstat. This is the same information as netstat -s. 	Linux
+      - --no-collector.nfs          # Exposes NFS client statistics from /proc/net/rpc/nfs. This is the same information as nfsstat -c. 	Linux
+      - --no-collector.nfsd         # Exposes NFS kernel server statistics from /proc/net/rpc/nfsd. This is the same information as nfsstat -s. 	Linux
+      #- --no-collector.pressure     # Exposes pressure stall statistics from /proc/pressure/. 	Linux (kernel 4.20+ and/or CONFIG_PSI)
+      #- --no-collector.schedstat    # Exposes task scheduler statistics from /proc/schedstat. 	Linux
+      #- --no-collector.sockstat     # Exposes various statistics from /proc/net/sockstat. 	Linux
+      #- --no-collector.stat         # Exposes various statistics from /proc/stat. This includes boot time, forks and interrupts. 	Linux
+      - --no-collector.textfile     # Exposes statistics read from local disk. The --collector.textfile.directory flag must be set. 	any
+      #- --no-collector.time         # Exposes the current system time. 	any
+      #- --no-collector.timex        # Exposes selected adjtimex(2) system call stats. 	Linux
+      #- --no-collector.uname        # Exposes system information as provided by the uname system call. 	Darwin, FreeBSD, Linux, OpenBSD
+      #- --no-collector.vmstat       # Exposes statistics from /proc/vmstat. 	Linux
+      - --no-collector.xfs          # Exposes XFS runtime statistics. 	Linux (kernel 4.4+)
+      - --no-collector.zfs          # Exposes ZFS performance statistics. 	Linux, Solaris
+      # Enable off-by-default collectors
+      #- --collector.buddyinfo    # Exposes statistics of memory fragments as reported by /proc/buddyinfo. 	Linux
+      #- --collector.devstat      # Exposes device statistics 	Dragonfly, FreeBSD
+      #- --collector.drbd         # Exposes Distributed Replicated Block Device statistics (to version 8.4) 	Linux
+      #- --collector.interrupts   # Exposes detailed interrupts statistics. 	Linux, OpenBSD
+      #- --collector.ksmd         # Exposes kernel and system statistics from /sys/kernel/mm/ksm. 	Linux
+      #- --collector.logind       # Exposes session counts from logind. 	Linux
+      #- --collector.meminfo_numa # Exposes memory statistics from /proc/meminfo_numa. 	Linux
+      #- --collector.mountstats   # Exposes filesystem statistics from /proc/self/mountstats. Exposes detailed NFS client statistics. 	Linux
+      #- --collector.ntp          # Exposes local NTP daemon health to check time 	any
+      #- --collector.perf         # Exposes perf based metrics (Warning: Metrics are dependent on kernel configuration and settings). 	Linux
+      #- --collector.processes    # Exposes aggregate process statistics from /proc. 	Linux
+      #- --collector.qdisc        # Exposes queuing discipline statistics 	Linux
+      #- --collector.runit        # Exposes service status from runit. 	any
+      #- --collector.supervisord  # Exposes service status from supervisord. 	any
+      #- --collector.systemd      # Exposes service and system status from systemd. 	Linux
+      #- --collector.tcpstat      # Exposes TCP connection status information from /proc/net/tcp and /proc/net/tcp6. (Warning: the current version has potential performance issues in high load situations.) 	Linux
+      #- --collector.wifi         # Exposes WiFi device and station statistics. 	Linux
+    mem_limit: 100m
+    restart: unless-stopped
+
+  cadvisor:
+    image: shipreq/ops/cadvisor
+    container_name: shipreq_dev_cadvisor
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /dev/disk/:/dev/disk:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/run:/var/run:ro
+    mem_limit: 128m
+    restart: unless-stopped
+
+  postgres_exporter:
+    image: shipreq/ops/postgres_exporter
+    container_name: shipreq_dev_postgres_exporter
+    ports:
+      - $PORT_POSTGRES_EXPORTER:9187
+    links:
+      - postgres
+    environment:
+      - DATA_SOURCE_NAME=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@postgres:5432/$POSTGRES_DB?sslmode=disable
+
+  # This locally fakes what you'd get with the real ecs_exporter running in AWS ECS
+  ecs_exporter:
+    image: nginx:1
+    container_name: shipreq_dev_ecs_exporter
+    ports:
+      - $PORT_ECS_EXPORTER:80
+    volumes:
+      - ./ecs_exporter.metrics.txt:/usr/share/nginx/html/metrics:ro
+    cpus: 0.1
+    mem_limit: 10m
+
+  prometheus-tech:
+    image: prom/prometheus:v2.14.0
+    container_name: shipreq_dev_prometheus-tech
+    user: root
+    extra_hosts:
+     - parent-host:$DOCKER0
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - data-prometheus:/data
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/data/
+      - --storage.tsdb.retention.time=730d
+      - --web.external-url=http://prometheus-tech:9090/prometheus/tech/
+    cpus: 2
+    mem_limit: 200m
+
+  grafana:
+    image: shipreq/ops/grafana
+    container_name: shipreq_dev_grafana
+    links:
+      - prometheus-tech
+    environment:
+      - PROMETHEUS_TECH_URL=http://prometheus-tech:9090/prometheus/tech
+      - PROMETHEUS_BIZ_URL=http://todo
+      - PROMETHEUS_TECH_SCRAPE_INTERVAL=20s
+      - PROMETHEUS_BIZ_SCRAPE_INTERVAL=2m
+    cpus: 2
+    mem_limit: 100m
+
+  ##################################################################################################
+  # DevOps: Logging
+
+  filebeat:
+    image: shipreq/ops/filebeat
+    container_name: shipreq_dev_filebeat
+    links:
+      - elasticsearch
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/log:/host/var/log:ro
+    environment:
+      - AWS_INSTANCE_ID=i-local
+      - AWS_INSTANCE_IP=127.0.0.1
+      - CLUSTER=local
+      - ES_HOSTS=elasticsearch:9200
+    command:
+      - -e
+      - -strict.perms=false
+      - -d
+      - "processors"
+    mem_limit: 100m
+
+  # sudo sysctl -w vm.max_map_count=262144
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.1.0
+    container_name: shipreq_dev_elasticsearch
+    environment:
+      - discovery.type=single-node
+    mem_limit: 1g
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:7.1.0
+    container_name: shipreq_dev_kibana
+    links:
+      - elasticsearch
+    environment:
+      - SERVER_BASEPATH=/_plugin/kibana
+      - SERVER_REWRITEBASEPATH=true
+    mem_limit: 1g
+
+  ##################################################################################################
+  # DevOps: Other
+
+  portal:
+    image: shipreq/ops/portal
+    container_name: shipreq_dev_portal
+    ports:
+      - $PORT_PORTAL:80
+    environment:
+      - CADVISOR_URL=http://cadvisor:8080
+      - DNS_TTL=10s
+      - FRESHDESK_DOMAIN=yoarmum
+      - GA_TRACKING_ID=UA-105581783-2
+      - GRAFANA_URL=http://grafana:3000
+      - JAEGER_URL=http://localhost:$PORT_JAEGER_HTTP
+      - KIBANA_DEFAULT_PATH=
+      - KIBANA_URL=http://kibana:5601
+      - PROMETHEUS_BIZ_URL=http://todo
+      - PROMETHEUS_TECH_URL=http://prometheus-tech:9090
+      - SHIPREQ_ENV=local-dev
+      - SHIPREQ_URL=http://localhost:$PORT_SHIPREQ_WEBAPP
+    cpus: 0.1
+    mem_limit: 400m
+
+  # You wouldn't do this in prod - it uses in-memory storage
+  jaeger:
+    image: jaegertracing/all-in-one:1.15.1
+    container_name: shipreq_dev_jaeger
+    ports:
+      - $PORT_JAEGER_HTTP:16686
+      - $PORT_JAEGER_COLLECTOR:14268
+    mem_limit: 200m

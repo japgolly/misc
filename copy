@@ -17,6 +17,7 @@ function finds {
 cd "$src"
 
 $prepare project/*.properties
+$prepare bin/dev bin/env envs/dev/.env envs/{dev,test}/docker-compose.yml
 find -name '*.sbt' | xargs $prepare
 finds project | xargs $prepare
 find frontend -name AssetManifest.scala | xargs $prepare

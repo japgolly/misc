@@ -184,7 +184,7 @@ object Dependencies {
     val servlet    = mm("simpleclient_servlet")
   }
 
-  val scalajsBenchmark = jsOnly("com.github.japgolly.scalajs-benchmark" %% "benchmark"         % "0.3.0")
+  val scalajsBenchmark = jsOnly("com.github.japgolly.scalajs-benchmark" %% "benchmark"         % "0.4.0")
   val scalajsDom       = jsOnly("org.scala-js"                          %% "scalajs-dom"       % "0.9.8")
   val scalajsJavaTime  = jsOnly("org.scala-js"                          %% "scalajs-java-time" % "0.2.6")
 

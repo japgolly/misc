@@ -1,0 +1,70 @@
+#!/bin/bash
+
+cd "$(dirname "$(readlink -e "$0")")/../envs" || exit 1
+
+if [ $# -eq 0 ]; then
+  self="$0"
+  echo "Usage:"
+  echo "  $self <env> [docker-compose-args...]"
+  echo "Examples:"
+  echo "  $self test up -d"
+  echo "  $self dev up"
+  echo "  $self dev stop"
+  exit 1
+fi
+
+env="$1"
+shift
+
+[ ! -e "$env" ] && echo "File not found: $(pwd)/$env" && exit 2
+cd "$env"
+
+# ElasticSearch won't start if vm.max_map_count is too low
+if [[ "$env" != "test" ]]; then
+  VM_MAX_MAP_COUNT="$(sysctl vm.max_map_count | sed 's/^.*= *//')"
+  if [[ -z "$VM_MAX_MAP_COUNT" || "$VM_MAX_MAP_COUNT" -lt 262144 ]]; then
+    echo "sysctl vm.max_map_count = $VM_MAX_MAP_COUNT. ElasticSearch requires it be >= 262144" >&2
+    cmd="sudo sysctl -w vm.max_map_count=262144"
+    echo "> $cmd" >&2
+    $cmd || exit 1
+  fi
+fi
+
+# Expose localhost so that prometheus can collect metrics when running via SBT
+if [[ "$env" != "test" ]]; then
+  export DOCKER0="$(ip route show | grep docker0 | awk '{print $9}')"
+  [[ ! "$DOCKER0" =~ ^[0-9][0-9.]*$ ]] && echo "Invalid docker0 ip: $DOCKER0" && exit 3
+fi
+
+# Prevent muscle-memory blowing all state
+down=0
+for arg in "$@"; do
+  [ "$arg" == down ] && down=1
+done
+[ $down == 1 -a "$env" != "test" ] \
+  && echo "WARNING: The 'down' command will remove containers after stopping them meaning you'll lose all state." \
+  && echo "         Use 'stop' instead if you want to retain state..." \
+  && echo "5..." && sleep 1 \
+  && echo "4..." && sleep 1 \
+  && echo "3..." && sleep 1 \
+  && echo "2..." && sleep 1 \
+  && echo "1..." && sleep 1
+
+cmd=(
+  # In project name (-p) dashes and underscores and removed automatically
+  docker-compose
+  -p shipreq$env
+)
+
+if [ "$1" = bounce ]; then
+  shift
+  for a in "$@"; do
+    docker rm -f shipreq_${env}_$a
+  done
+
+  "${cmd[@]}" up -d "$@" \
+    && exec docker logs -f shipreq_${env}_$1
+
+else
+  exec "${cmd[@]}" "$@"
+fi

@@ -1,0 +1,24 @@
+version: '2.4'
+services:
+
+  postgres:
+    image: ${DEV_POSTGRES_IMAGE_URL:-shipreq/dev/postgres}
+    container_name: shipreq_test_postgres
+    ports:
+      - "13032:5432"
+    environment:
+      - POSTGRES_DB=shipreq_test
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=sqt
+    logging:
+      driver: none
+    mem_limit: 100m
+
+  redis:
+    image: bitnami/redis:5.0.5
+    container_name: shipreq_test_redis
+    ports:
+      - "13079:6379"
+    environment:
+      - REDIS_PASSWORD=sqt
+    mem_limit: 100m
