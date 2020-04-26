@@ -1,0 +1,11 @@
+.cache
+.bloop
+.idea*
+.metals
+.target
+project/sjsincoptbench.sbt
+target
+*.pid
+*.out
+*.err
+project/metals.sbt
