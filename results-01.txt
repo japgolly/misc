@@ -1,0 +1,81 @@
+Benchmark                         (size)  Mode  Cnt        Score        Error  Units
+ScalaArraySeqBM.concat1              100  avgt   25       94.457 ±      0.101  ns/op
+ScalaArraySeqBM.concatCurrent        100  avgt   25      330.533 ±      0.488  ns/op
+ScalaArraySeqBM.foldLeftCurrent      100  avgt   25      498.698 ±      5.430  ns/op
+ScalaArraySeqBM.foldLeftWhile1       100  avgt   25      463.092 ±      1.428  ns/op
+ScalaArraySeqBM.foldLeftWhile2       100  avgt   25      395.105 ±      5.843  ns/op
+ScalaArraySeqBM.foldRightCurrent     100  avgt   25      603.237 ±      1.956  ns/op
+ScalaArraySeqBM.foldRightRevIt       100  avgt   25      402.432 ±      2.473  ns/op
+ScalaArraySeqBM.foldRightWhile1      100  avgt   25      399.931 ±      0.665  ns/op
+ScalaArraySeqBM.foldRightWhile2      100  avgt   25      387.923 ±      0.917  ns/op
+ScalaArraySeqBM.foreachCurrent       100  avgt   25       93.679 ±      0.654  ns/op
+ScalaArraySeqBM.foreachWhile1        100  avgt   25      145.229 ±      0.031  ns/op
+ScalaArraySeqBM.foreachWhile2        100  avgt   25      138.271 ±      0.051  ns/op
+ScalaVectorBM.foldLeftCurrent        100  avgt   25      575.935 ±      1.936  ns/op
+ScalaVectorBM.foldLeftWhile1         100  avgt   25      487.710 ±      1.230  ns/op
+ScalaVectorBM.foldRightCurrent       100  avgt   25      666.226 ±     18.179  ns/op
+ScalaVectorBM.foldRightRevIt         100  avgt   25      434.745 ±      0.530  ns/op
+ScalaVectorBM.foldRightWhile1        100  avgt   25      435.982 ±      0.833  ns/op
+ScalaVectorBM.foreachCurrent         100  avgt   25      156.298 ±      1.068  ns/op
+ScalaVectorBM.foreachWhile1          100  avgt   25      258.210 ±      0.078  ns/op
+ScalaArraySeqBM.concat1             1000  avgt   25      701.924 ±      0.791  ns/op
+ScalaArraySeqBM.concatCurrent       1000  avgt   25     2912.726 ±      3.556  ns/op
+ScalaArraySeqBM.foldLeftCurrent     1000  avgt   25     5889.349 ±      6.369  ns/op
+ScalaArraySeqBM.foldLeftWhile1      1000  avgt   25     3942.887 ±     15.825  ns/op
+ScalaArraySeqBM.foldLeftWhile2      1000  avgt   25     3316.300 ±      4.726  ns/op
+ScalaArraySeqBM.foldRightCurrent    1000  avgt   25     6008.758 ±     14.379  ns/op
+ScalaArraySeqBM.foldRightRevIt      1000  avgt   25     3812.525 ±      7.188  ns/op
+ScalaArraySeqBM.foldRightWhile1     1000  avgt   25     3596.541 ±      9.963  ns/op
+ScalaArraySeqBM.foldRightWhile2     1000  avgt   25     3316.037 ±     14.637  ns/op
+ScalaArraySeqBM.foreachCurrent      1000  avgt   25     1362.389 ±      4.092  ns/op
+ScalaArraySeqBM.foreachWhile1       1000  avgt   25     1581.829 ±      4.575  ns/op
+ScalaArraySeqBM.foreachWhile2       1000  avgt   25     1600.937 ±      3.720  ns/op
+ScalaVectorBM.foldLeftCurrent       1000  avgt   25     7689.052 ±    262.163  ns/op
+ScalaVectorBM.foldLeftWhile1        1000  avgt   25     4900.074 ±     20.812  ns/op
+ScalaVectorBM.foldRightCurrent      1000  avgt   25     7254.408 ±    170.620  ns/op
+ScalaVectorBM.foldRightRevIt        1000  avgt   25     4455.026 ±     15.950  ns/op
+ScalaVectorBM.foldRightWhile1       1000  avgt   25     4420.852 ±      6.487  ns/op
+ScalaVectorBM.foreachCurrent        1000  avgt   25     1718.133 ±      8.556  ns/op
+ScalaVectorBM.foreachWhile1         1000  avgt   25     2874.588 ±      9.802  ns/op
+ScalaArraySeqBM.concat1            10000  avgt   25     6836.596 ±      9.805  ns/op
+ScalaArraySeqBM.concatCurrent      10000  avgt   25    35306.198 ±   2503.087  ns/op
+ScalaArraySeqBM.foldLeftCurrent    10000  avgt   25    65232.236 ±    171.410  ns/op
+ScalaArraySeqBM.foldLeftWhile1     10000  avgt   25    42727.136 ±    104.019  ns/op
+ScalaArraySeqBM.foldLeftWhile2     10000  avgt   25    35607.304 ±    103.520  ns/op
+ScalaArraySeqBM.foldRightCurrent   10000  avgt   25    93967.713 ±    196.049  ns/op
+ScalaArraySeqBM.foldRightRevIt     10000  avgt   25    40472.312 ±    120.247  ns/op
+ScalaArraySeqBM.foldRightWhile1    10000  avgt   25    38756.520 ±    155.487  ns/op
+ScalaArraySeqBM.foldRightWhile2    10000  avgt   25    34943.538 ±    126.855  ns/op
+ScalaArraySeqBM.foreachCurrent     10000  avgt   25    16617.315 ±    294.354  ns/op
+ScalaArraySeqBM.foreachWhile1      10000  avgt   25    19077.353 ±    303.895  ns/op
+ScalaArraySeqBM.foreachWhile2      10000  avgt   25    19428.453 ±    528.063  ns/op
+ScalaVectorBM.foldLeftCurrent      10000  avgt   25    64380.439 ±   6279.681  ns/op
+ScalaVectorBM.foldLeftWhile1       10000  avgt   25    66499.740 ±    226.418  ns/op
+ScalaVectorBM.foldRightCurrent     10000  avgt   25    87515.409 ±    229.683  ns/op
+ScalaVectorBM.foldRightRevIt       10000  avgt   25    58699.425 ±    287.137  ns/op
+ScalaVectorBM.foldRightWhile1      10000  avgt   25    57311.957 ±    593.907  ns/op
+ScalaVectorBM.foreachCurrent       10000  avgt   25    26004.374 ±    360.729  ns/op
+ScalaVectorBM.foreachWhile1        10000  avgt   25    42953.227 ±    253.228  ns/op
+
+
+Conclusions
+============
+ScalaArraySeqBM.concat1          [3.5, 4.1, 5.2]x as fast @ [100, 1000, 10000]
+ScalaArraySeqBM.foldLeftWhile2   [1.3, 1.8, 1.8]x as fast @ [100, 1000, 10000]
+ScalaArraySeqBM.foldRightWhile2  [1.6, 1.8, 2.7]x as fast @ [100, 1000, 10000]
+ScalaArraySeqBM.foreachCurrent   stdlib impl already best
+ScalaVectorBM.foldLeftWhile1     [1.2, 1.6, 1.0]x as fast @ [100, 1000, 10000]
+ScalaVectorBM.foldRightWhile1    [1.5, 1.6, 1.5]x as fast @ [100, 1000, 10000]
+ScalaVectorBM.foreachCurrent     stdlib impl already best
+
+
+Other interesting observations
+==============================
+JIT makes some BMs worse!
+  * scalabm.ScalaArraySeqBM.foldLeftCurrent
+  * scalabm.ScalaArraySeqBM.foldLeftWhile1
+  * scalabm.ScalaArraySeqBM.foldRightCurrent
+  * scalabm.ScalaArraySeqBM.foreachWhile1
+  * scalabm.ScalaArraySeqBM.foreachWhile2
+  * scalabm.ScalaVectorBM.foldLeftCurrent @ 1000
+
