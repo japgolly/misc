@@ -2,6 +2,7 @@ package scalabm
 
 import java.util.concurrent.TimeUnit
 import org.openjdk.jmh.annotations._
+import org.openjdk.jmh.infra.Blackhole
 import scala.collection.AbstractIterator
 import scala.collection.immutable.ArraySeq
 import scala.reflect.ClassTag
@@ -116,8 +117,10 @@ class ScalaArraySeqBM {
   var as: ArraySeq[String] = _
 
   @Setup
-  def setup(): Unit = {
-    as = ArraySeq.tabulate(size.toInt)(_.toString)
+  def setup(bh: Blackhole): Unit = {
+    val sz = size.toInt
+    CollectionNoise(bh, sz)
+    as = ArraySeq.tabulate(sz)(_.toString)
   }
 
   @Benchmark def foreachCurrent = {var i=0; as.foreach(a => i += a.length); i}

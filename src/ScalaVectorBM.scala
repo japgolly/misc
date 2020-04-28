@@ -2,6 +2,7 @@ package scalabm
 
 import java.util.concurrent.TimeUnit
 import org.openjdk.jmh.annotations._
+import org.openjdk.jmh.infra.Blackhole
 import scala.collection.AbstractIterator
 import scala.reflect.ClassTag
 
@@ -67,8 +68,10 @@ class ScalaVectorBM {
   var as: Vector[String] = _
 
   @Setup
-  def setup(): Unit = {
-    as = Vector.tabulate(size.toInt)(_.toString)
+  def setup(bh: Blackhole): Unit = {
+    val sz = size.toInt
+    CollectionNoise(bh, sz)
+    as = Vector.tabulate(sz)(_.toString)
   }
 
   @Benchmark def foreachCurrent = {var i=0; as.foreach(a => i += a.length); i}
