@@ -1,0 +1,73 @@
+Benchmark                         (size)  Mode  Cnt        Score        Error  Units     vs results-01 (0=no change,
+                                                                                                        1=doubly slow,
+                                                                                                       -1=doubly fast)
+
+ScalaArraySeqBM.concat1              100  avgt   25       94.469 ±      0.358  ns/op     0.0
+ScalaArraySeqBM.concatCurrent        100  avgt   25      933.755 ±      1.365  ns/op     1.8 **
+ScalaArraySeqBM.foldLeftCurrent      100  avgt   25      865.556 ±      1.463  ns/op     0.7 *
+ScalaArraySeqBM.foldLeftWhile1       100  avgt   25      447.475 ±      1.972  ns/op     0.0
+ScalaArraySeqBM.foldLeftWhile2       100  avgt   25      373.235 ±      1.563  ns/op    -0.1
+ScalaArraySeqBM.foldRightCurrent     100  avgt   25     3083.718 ±     23.517  ns/op     4.1 ****
+ScalaArraySeqBM.foldRightRevIt       100  avgt   25      381.615 ±      5.699  ns/op    -0.1
+ScalaArraySeqBM.foldRightWhile1      100  avgt   25      388.770 ±      1.257  ns/op     0.0
+ScalaArraySeqBM.foldRightWhile2      100  avgt   25      371.452 ±      5.869  ns/op     0.0
+ScalaArraySeqBM.foreachCurrent       100  avgt   25      124.304 ±      0.211  ns/op     0.3
+ScalaArraySeqBM.foreachWhile1        100  avgt   25      145.275 ±      0.102  ns/op     0.0
+ScalaArraySeqBM.foreachWhile2        100  avgt   25      138.288 ±      0.077  ns/op     0.0
+ScalaVectorBM.foldLeftCurrent        100  avgt   25      912.326 ±     16.859  ns/op     0.6 *
+ScalaVectorBM.foldLeftWhile1         100  avgt   25      484.330 ±      1.574  ns/op     0.0
+ScalaVectorBM.foldRightCurrent       100  avgt   25     1748.256 ±     22.836  ns/op     1.6 **
+ScalaVectorBM.foldRightRevIt         100  avgt   25      439.313 ±      6.301  ns/op     0.0
+ScalaVectorBM.foldRightWhile1        100  avgt   25      437.953 ±      7.419  ns/op     0.0
+ScalaVectorBM.foreachCurrent         100  avgt   25      156.274 ±      1.700  ns/op     0.0
+ScalaVectorBM.foreachWhile1          100  avgt   25      234.115 ±      1.698  ns/op    -0.1
+
+ScalaArraySeqBM.concat1             1000  avgt   25      700.080 ±      1.292  ns/op     0.0
+ScalaArraySeqBM.concatCurrent       1000  avgt   25     8466.527 ±      4.469  ns/op     1.9 **
+ScalaArraySeqBM.foldLeftCurrent     1000  avgt   25    10005.187 ±     17.321  ns/op     0.7 *
+ScalaArraySeqBM.foldLeftWhile1      1000  avgt   25     3913.160 ±      9.710  ns/op     0.0
+ScalaArraySeqBM.foldLeftWhile2      1000  avgt   25     3304.644 ±      6.410  ns/op     0.0
+ScalaArraySeqBM.foldRightCurrent    1000  avgt   25    21337.283 ±   6338.984  ns/op     2.6 ***
+ScalaArraySeqBM.foldRightRevIt      1000  avgt   25     3829.971 ±     10.013  ns/op     0.0
+ScalaArraySeqBM.foldRightWhile1     1000  avgt   25     3611.537 ±      7.257  ns/op     0.0
+ScalaArraySeqBM.foldRightWhile2     1000  avgt   25     3269.777 ±     12.787  ns/op     0.0
+ScalaArraySeqBM.foreachCurrent      1000  avgt   25     1466.466 ±     10.736  ns/op     0.1
+ScalaArraySeqBM.foreachWhile1       1000  avgt   25     1579.452 ±      5.208  ns/op     0.0
+ScalaArraySeqBM.foreachWhile2       1000  avgt   25     1602.900 ±      4.482  ns/op     0.0
+ScalaVectorBM.foldLeftCurrent       1000  avgt   25    10076.849 ±      7.647  ns/op     0.3
+ScalaVectorBM.foldLeftWhile1        1000  avgt   25     4904.336 ±      8.280  ns/op     0.0
+ScalaVectorBM.foldRightCurrent      1000  avgt   25    17755.623 ±     14.413  ns/op     1.4 *
+ScalaVectorBM.foldRightRevIt        1000  avgt   25     4503.691 ±     18.754  ns/op     0.0
+ScalaVectorBM.foldRightWhile1       1000  avgt   25     4474.217 ±      9.170  ns/op     0.0
+ScalaVectorBM.foreachCurrent        1000  avgt   25     1721.656 ±     17.539  ns/op     0.0
+ScalaVectorBM.foreachWhile1         1000  avgt   25     2746.774 ±      6.325  ns/op     0.0
+
+ScalaArraySeqBM.concat1            10000  avgt   25     6834.118 ±     22.294  ns/op     0.0
+ScalaArraySeqBM.concatCurrent      10000  avgt   25    83982.616 ±     69.846  ns/op     1.4 *
+ScalaArraySeqBM.foldLeftCurrent    10000  avgt   25   103654.867 ±    126.229  ns/op     0.6 *
+ScalaArraySeqBM.foldLeftWhile1     10000  avgt   25    41888.540 ±    117.013  ns/op     0.0
+ScalaArraySeqBM.foldLeftWhile2     10000  avgt   25    34938.924 ±    136.242  ns/op     0.0
+ScalaArraySeqBM.foldRightCurrent   10000  avgt   25   272377.567 ±  34749.320  ns/op     1.9 **
+ScalaArraySeqBM.foldRightRevIt     10000  avgt   25    39793.983 ±     77.326  ns/op     0.0
+ScalaArraySeqBM.foldRightWhile1    10000  avgt   25    37946.380 ±     94.092  ns/op     0.0
+ScalaArraySeqBM.foldRightWhile2    10000  avgt   25    34053.390 ±     92.509  ns/op     0.0
+ScalaArraySeqBM.foreachCurrent     10000  avgt   25    18927.650 ±    427.484  ns/op     0.1
+ScalaArraySeqBM.foreachWhile1      10000  avgt   25    19436.090 ±    474.124  ns/op     0.0
+ScalaArraySeqBM.foreachWhile2      10000  avgt   25    20211.353 ±    361.118  ns/op     0.0
+ScalaVectorBM.foldLeftCurrent      10000  avgt   25   107540.811 ±    176.914  ns/op     0.7 *
+ScalaVectorBM.foldLeftWhile1       10000  avgt   25    64920.037 ±    208.585  ns/op     0.0
+ScalaVectorBM.foldRightCurrent     10000  avgt   25   182703.725 ±    786.383  ns/op     1.1 *
+ScalaVectorBM.foldRightRevIt       10000  avgt   25    58147.462 ±    187.508  ns/op     0.0
+ScalaVectorBM.foldRightWhile1      10000  avgt   25    57953.653 ±   1425.466  ns/op     0.0
+ScalaVectorBM.foreachCurrent       10000  avgt   25    24468.685 ±   1336.372  ns/op    -0.1
+ScalaVectorBM.foreachWhile1        10000  avgt   25    40070.201 ±    420.579  ns/op    -0.1
+
+Conclusions
+============
+* ScalaArraySeqBM.concat1         still the winner, this time by a greater margin vs current
+* ScalaArraySeqBM.foldLeftWhile2  still the winner, this time by a greater margin vs current
+* ScalaArraySeqBM.foldRightWhile2 still the winner, this time by a greater margin vs current
+* ScalaArraySeqBM.foreachCurrent  still the winner
+* ScalaVectorBM.foldLeftWhile1    still the winner, this time by a greater margin vs current
+* ScalaVectorBM.foldRightWhile1   still the winner, this time by a greater margin vs current
+* ScalaVectorBM.foreachCurrent    still the winner
